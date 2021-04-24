@@ -3961,6 +3961,7 @@ input[type=button].btn-block {
 }
 
 .nav-link {
+  margin-top: auto;
   display: block;
   padding: 0.5rem 1rem;
 }
