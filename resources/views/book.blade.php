@@ -46,6 +46,7 @@
                                             @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                             @endforeach
+                                        </ul>
                                     @endif
                                     <form method='post' action="{{ url('/login/checklogin') }}">
                                         {{ csrf_field() }}
@@ -58,8 +59,7 @@
                                     </postpos>
                                 </form>
                                 </div>
-                            </div>
-                </div>
+                    </div> 
             </div>
         </nav>
         <!-- Masthead-->
@@ -78,6 +78,20 @@
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
+                <div style="background-color: rgb(230 230 250)">
+                    <form method="get" action="/bookResults">
+                        <input type="text" name="bookTitle" style="width: 94.7%" placeholder="Wpisz szukaną frazę"><button type="submit">Szukaj</button></form></div>
+                <div style="float:left; border: dotted; background-color: gray; height:300px; width: 30%;">
+                  @foreach($category as $c)
+                  <li>{{$c->category}}</li>
+                  @endforeach
+                </div>
+                <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 70%;">
+                    @foreach($book as $b)
+                    <li>{{$b->title}} &nbsp; {{$b->isbn}}</li>
+                    @endforeach
+                </div>
+                <div style="clear:both;"></div>
             </div>
         </section>
         <!-- Footer-->
@@ -95,7 +109,7 @@
                     </div>
                     <!-- Footer Social Icons-->
                     <div class="col-lg-4 mb-5 mb-lg-0">
-                        <h4 class="text-uppercase mb-4">Znajdź nas w internecje</h4>
+                        <h4 class="text-uppercase mb-4">Znajdź nas w internecie</h4>
 </br>
                         <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
                         <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>

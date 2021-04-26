@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Book;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,5 @@ Route::post('/login/checklogin','App\Http\Controllers\LoginController@checklogin
 Route::get('/login/logout','App\Http\Controllers\LoginController@logout');
 Route::get('/register','App\Http\Controllers\RegisterController@index');
 Route::post('/register/register','App\Http\Controllers\RegisterController@register');
-Route::get('/book', function () {return view('book');});
+Route::get('/book','App\Http\Controllers\SearchEngine@allBooksWithCategories');
+Route::get('/bookResults', 'App\Http\Controllers\SearchEngine@findBook');

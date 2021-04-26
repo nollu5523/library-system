@@ -20,7 +20,7 @@ class BooksTableSeeder extends Seeder
         	'id' => 1,
         	'isbn' => '978-83-900210-1-0',
         	'title' => 'Pan Tadeusz',
-        	'description' => 'Akcja Pana Tadeusza rozgrywa się na Litwie w dworku Soplicowie oraz w Dobrzynie.',
+        	'description' => 'Akcja Pana Tadeusza rozgrywa się na Litwie w dworku w Soplicowie oraz w Dobrzynie.',
         	'category_id' => 1,
         	'publishing_id' => 1,
         ]);
