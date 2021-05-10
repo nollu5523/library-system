@@ -27,28 +27,40 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/bookAdd') }}">Dodaj Książkę</a></li>
+                        @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#news">Wiadomości</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">O nas</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Kontakt</a></li>
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    @if(isset (Auth::user()->email))
-                                        <script>window.location="/login/successlogin/";</script>
-                                    @endif
+                                    
 
                                     @if($message = Session::get('error'))
                                             <button type ="button" data-dismiss="alert">x</button>
                                             <strong>{{ $message }}</strong>
                                     @endif
-
-                                    @if (count($errors) > 0)
+                                    <!-- Wyświetlanie błędów logowania --!>
+                                    <!-- @if (count($errors) > 0)
                                         <ul>
                                             @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                             @endforeach
-                                    @endif
+                                    @endif -->
+
+                                     @if(isset(Auth::user()->czy_admin))
+
+                                    <strong>Witaj Adminie {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <a href="{{ url('/login/logout') }}"> Logout </a>
+                                    @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
+                                    
+                                    <strong>Witaj Użytkowniku {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <a href="{{ url('/login/logout') }}"> Logout </a>
+                                    @else
                                     <form method='post' action="{{ url('/login/checklogin') }}">
+                                        @csrf
                                         {{ csrf_field() }}
                                          <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
                                          <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
@@ -58,6 +70,7 @@
                                         <a href="{{ url('/register') }}"> Rejestracja </a>
                                     </postpos>
                                 </form>
+                                @endif
                                 </div>
                             </div>
                 </div>

@@ -18,13 +18,15 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/welcome', 'App\Http\Controllers\LoginController@welcome');
 Route::get('/login', 'App\Http\Controllers\LoginController@index');
 Route::get('login/successlogin', 'App\Http\Controllers\LoginController@successlogin');
-Route::get('/successlogin', 'App\Http\Controllers\LoginController@successlogin');
 Route::post('/login/checklogin','App\Http\Controllers\LoginController@checklogin');
 Route::get('/login/logout','App\Http\Controllers\LoginController@logout');
 Route::get('/register','App\Http\Controllers\RegisterController@index');
 Route::post('/register/register','App\Http\Controllers\RegisterController@register');
 Route::get('/book','App\Http\Controllers\SearchEngine@allBooksWithCategories');
 Route::get('/bookResults', 'App\Http\Controllers\SearchEngine@findBook');
+Route::get('/bookAdd','App\Http\Controllers\BookController@index');
+Route::post('/bookAdd','App\Http\Controllers\BookController@add');
+Route::get('/categoryFilter','App\Http\Controllers\SearchEngine@categoryFilter');
+Route::get('/author', 'App\Http\Controllers\SearchEngine@authorAllBooks');

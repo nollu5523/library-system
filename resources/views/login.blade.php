@@ -32,9 +32,7 @@
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    @if(isset (Auth::user()->email))
-                                        <script>window.location="/login/successlogin/";</script>
-                                    @endif
+                                    
 
                                     @if($message = Session::get('error'))
                                             <button type ="button" data-dismiss="alert">x</button>
@@ -47,7 +45,18 @@
                                             <li>{{ $error }}</li>
                                             @endforeach
                                     @endif
+                                    
+                                    @if(isset(Auth::user()->czy_admin))
+
+                                    <strong>Witaj Adminie {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <a href="{{ url('/login/logout') }}"> Logout </a>
+                                    @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
+                                    
+                                    <strong>Witaj Użytkowniku {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <a href="{{ url('/login/logout') }}"> Logout </a>
+                                    @else
                                     <form method='post' action="{{ url('/login/checklogin') }}">
+                                        @csrf
                                         {{ csrf_field() }}
                                          <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
                                          <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
@@ -57,6 +66,7 @@
                                         <a href="{{ url('/register') }}"> Rejestracja </a>
                                     </postpos>
                                 </form>
+                                @endif
                                 </div>
                             </div>
                 </div>

@@ -22,19 +22,17 @@ class LoginController extends Controller
     	$user_data = array(
     		'email' => $request->get('email'),
     		'password' => $request->get('password')
-    		
     	);
 
     	if(Auth::attempt($user_data))
     	{
-    		return view('successlogin');
+    		return view('index');
     	}
     	else
     	{
     		return back()->with('error', 'bledny email lub haslo');
     	}
     }
-	
     function successlogin()
     {
     	return view('successlogin');
@@ -44,9 +42,5 @@ class LoginController extends Controller
     {
     	Auth::logout();
     	return redirect('login');
-    }
-    function welcome()
-    {
-        return view('welcome');
     }
 }

@@ -95,12 +95,9 @@
                     <form method="get" action="/bookResults">
                         <input type="text" name="bookTitle" style="width: 94.7%" placeholder="Wpisz szukaną frazę"><button type="submit">Szukaj</button></form></div>
                 <div style="float:left; border: dotted; background-color: gray; height:300px; width: 30%;">
-                  <form method="get" action="/categoryFilter">
-                  @foreach($category as $c)
-                  <input type="radio" name="category[]" value="{{$c->id}}"><label>{{$c->category}}</label></input></br>
+                  @foreach($author as $a)
+                  {{$a->name}} {{$a->surname}}
                   @endforeach
-                  <button type="submit" >Filtruj</button>
-              </form>
                 </div>
                 <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
                     @foreach($book as $b)
@@ -108,12 +105,7 @@
                     @endforeach
                 </div>
                 <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
-                    <form method="get" action="/author">
-                    @foreach($author as $a)
-                    <input type="radio" name="author[]" value="{{$a->surname}}"><label>{{$a->name}} {{$a->surname}}</label></input></br>
-                    @endforeach
-                    <button type="submit" >Szukaj książek</button>
-                    </form>
+                    
                 </div>
 
                 <div style="clear:both;"></div>

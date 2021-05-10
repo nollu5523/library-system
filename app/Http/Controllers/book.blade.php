@@ -27,40 +27,27 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/bookAdd') }}">Dodaj Książkę</a></li>
-                        @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/') }}">Strona główna</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Biblioteka</a></li>
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    
+                                    @if(isset (Auth::user()->email))
+                                        <script>window.location="/login/successlogin/";</script>
+                                    @endif
 
                                     @if($message = Session::get('error'))
                                             <button type ="button" data-dismiss="alert">x</button>
                                             <strong>{{ $message }}</strong>
                                     @endif
 
-                                    <!-- Wyświetlanie błędów logowania -->
-                                    <!-- @if (count($errors) > 0)
+                                    @if (count($errors) > 0)
                                         <ul>
                                             @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                             @endforeach
-                                        </ul>
-                                    @endif -->
-                                    @if(isset(Auth::user()->czy_admin))
-
-                                    <strong>Witaj Adminie {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
-                                    
-                                    <strong>Witaj Użytkowniku {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @else
+                                    @endif
                                     <form method='post' action="{{ url('/login/checklogin') }}">
-                                        @csrf
                                         {{ csrf_field() }}
                                          <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
                                          <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
@@ -70,9 +57,9 @@
                                         <a href="{{ url('/register') }}"> Rejestracja </a>
                                     </postpos>
                                 </form>
-                                @endif
                                 </div>
-                    </div> 
+                            </div>
+                </div>
             </div>
         </nav>
         <!-- Masthead-->
@@ -86,37 +73,38 @@
                 <!-- News Section Heading-->
                 <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Biblioteka</h2>
                 <!-- Icon Divider-->
+                <div class="ml-12">
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    <form method='post' action="{{('/bookAdd')}}">
+                                        {{ csrf_field() }}
+                                        <label> id:    </label> <input type="text" name="id" class="form-control" />  <br/>
+                                        <label> isbn:    </label> <input type="text" name="isbn" class="form-control"/>  <br/>
+                                        <label> title:    </label> <input type="text" name="title" class="form-control"/>  <br/>
+                                        <label> opis:    </label> <input type="text" name="description" class="form-control"/>  <br/>
+                                        <label> kategoria:    </label> <input type="text" name="category_id" class="form-control"/>  <br/>
+                                        <label> publish id:    </label> <input type="text" name="publishing_id" class="form-control"/>  <br/>
+                                    </br>
+                                    <input type="submit" name="submit" value="Dodaj"/>
+                                
+                                </form>
+                                </div>
+                               <!-- <div class="ml-12">
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    <form method='head' action="{{ url('/book') }}">
+                                        {{ csrf_field() }}
+                                        <label> imie:    </label> <input type="text" name="name" class="form-control"/>  <br/>
+                                        <label> nazwisko:    </label> <input type="text" name="surname" class="form-control"/>  <br/>
+                                        <label> id:    </label> <input type="text" name="id" class="form-control"/>  <br/>
+                                    </br>
+                                    <input type="submit" name="submit" value="Dodaj"/>
+                                
+                                </form>
+                                </div>-->
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <div style="background-color: rgb(230 230 250)">
-                    <form method="get" action="/bookResults">
-                        <input type="text" name="bookTitle" style="width: 94.7%" placeholder="Wpisz szukaną frazę"><button type="submit">Szukaj</button></form></div>
-                <div style="float:left; border: dotted; background-color: gray; height:300px; width: 30%;">
-                  <form method="get" action="/categoryFilter">
-                  @foreach($category as $c)
-                  <input type="radio" name="category[]" value="{{$c->id}}"><label>{{$c->category}}</label></input></br>
-                  @endforeach
-                  <button type="submit" >Filtruj</button>
-              </form>
-                </div>
-                <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
-                    @foreach($book as $b)
-                    <li>{{$b->title}}</li>
-                    @endforeach
-                </div>
-                <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
-                    <form method="get" action="/author">
-                    @foreach($author as $a)
-                    <input type="radio" name="author[]" value="{{$a->surname}}"><label>{{$a->name}} {{$a->surname}}</label></input></br>
-                    @endforeach
-                    <button type="submit" >Szukaj książek</button>
-                    </form>
-                </div>
-
-                <div style="clear:both;"></div>
             </div>
         </section>
         <!-- Footer-->
@@ -134,7 +122,7 @@
                     </div>
                     <!-- Footer Social Icons-->
                     <div class="col-lg-4 mb-5 mb-lg-0">
-                        <h4 class="text-uppercase mb-4">Znajdź nas w internecie</h4>
+                        <h4 class="text-uppercase mb-4">Znajdź nas w internecje</h4>
 </br>
                         <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
                         <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
