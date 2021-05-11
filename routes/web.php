@@ -30,17 +30,3 @@ Route::get('/bookAdd','App\Http\Controllers\BookController@index');
 Route::post('/bookAdd','App\Http\Controllers\BookController@add');
 Route::get('/categoryFilter','App\Http\Controllers\SearchEngine@categoryFilter');
 Route::get('/author', 'App\Http\Controllers\SearchEngine@authorAllBooks');
-Route::post('/categoryAdd', 'App\Http\Controllers\CategoryController@add');
-Route::post('/publishingAdd', 'App\Http\Controllers\PublishingController@add');
-Route::get('/delete/{id}', [
-'uses' => 'App\Http\Controllers\BookController@delete',
-'as' => 'delete'
-]);
-Route::get('/edit/{id}', [
-'uses' => 'App\Http\Controllers\BookController@edit',
-'as' => 'edit'
-]);
-Route::post('/update', [
-'uses' => 'App\Http\Controllers\BookController@update',
-'as' => 'update'
-]);
