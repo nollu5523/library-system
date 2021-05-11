@@ -1,4 +1,5 @@
-               <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+               
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                     <form method='post' action="{{ route('update') }}">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="id" value="{{ $edit->id }}">
