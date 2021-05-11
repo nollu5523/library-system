@@ -113,6 +113,67 @@
                                 
                                 </form>
                                 </div>-->
+
+                            <div class="ml-12">
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    <form method='post' action="{{('/categoryAdd')}}">
+                                        {{ csrf_field() }}
+                                        <label> id:    </label> <input type="text" name="id" class="form-control" />  <br/>
+                                        <label> nazwa kategorii:    </label> <input type="text" name="category" class="form-control"/>  <br/>
+                                    </br>
+                                    <input type="submit" name="submit2" value="Dodaj"/>
+                                
+                                </form>
+                            </div>
+
+                            <div class="ml-12">
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    <form method='post' action="{{('/publishingAdd')}}">
+                                        {{ csrf_field() }}
+                                        <label> id:    </label> <input type="text" name="id" class="form-control" />  <br/>
+                                        <label> nazwa wydawcy:    </label> <input type="text" name="name" class="form-control"/>  <br/>
+                                    </br>
+                                    <input type="submit" name="submit3" value="Dodaj"/>
+                                
+                                </form>
+                            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <th>#</th>
+                                    <th>id</th>
+                                    <th>isbn</th>
+                                    <th>title</th>
+                                    <th>description</th>
+                                    <th>category_id</th>
+                                    <th>publishing_id</th>
+                                </thead>
+                                {{ $i=1 }}
+                                @foreach($books as $book)
+                                <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $book->id }}</td>
+                                    <td>{{ $book->isbn }}</td>
+                                    <td>{{ $book->title }}<br>
+                                    <a href="{{ route('edit',['id' => $book->id]) }}">Edytuj</a> / 
+                                    <a href="{{ route('delete', ['id' => $book->id]) }}">Usun</a>
+                                    </td>
+                                    <td>{{ $book->description }}</td>
+                                    <td>{{ $book->category_id }}</td>
+                                    <td>{{ $book->publishing_id }}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
