@@ -9,19 +9,40 @@ class PublishingController extends Controller
 {
     function index()
     {
-    	return view('book');
+        $publishing = Publishing::all();
+    	return view('publishingAdd',compact('publishing'));
     }
     function add(Request $request)
     {
         $this->validate($request, array(
-            'id' => 'required|alphaNum|max:3',
             'name' => 'required|max:100',
         ));
 
         Publishing::create(array(
-            'id' => $request->input('id'),
             'name' => $request->input('name'),
         ));
-        return redirect()->back();
+        $publishing = Publishing::all();
+        return view('publishingAdd',compact('publishing'))->with('info','Pomyślnie dodano wydawnictwo');
+    }
+    function edit($id)
+    {
+        $edit = Publishing::where('id',$id)->first();
+        return view('editPublishing',compact('edit'));
+    }
+    function delete($id)
+    {
+        $publishing = Publishing::where('id',$id)->first();
+        $publishing->delete();
+        $publishing = Publishing::all();
+        return view('publishingAdd',compact('publishing'))->with('info','Pomyślnie usunięto wydawnictwo');
+    }
+    function update(Request $request)
+    {
+        $publishing = Publishing::where('id',$request->id)->first();
+        $publishing->name = $request->name;
+        $publishing->save();
+        $publishing = Publishing::all();
+
+        return view('publishingAdd',compact('publishing'))->with('info','Pomyślnie zaktualizowano wydawnictwo');
     }
 }

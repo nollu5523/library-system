@@ -33,10 +33,6 @@ class LoginController extends Controller
     		return back()->with('error', 'bledny email lub haslo');
     	}
     }
-    function successlogin()
-    {
-    	return view('successlogin');
-    }
 
     function logout()
     {

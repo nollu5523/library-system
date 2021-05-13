@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Rejestracja</title>
+        <title>Biblioteka</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
@@ -26,16 +26,38 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url('/book') }}">Książki</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url('/') }}">Strona główna</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Rejestracja</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/bookAdd') }}">Dodaj Książkę</a></li>
+                        @endif
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/categoryAdd') }}">Dodaj Kategorię</a></li>
+                        @endif
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/publishingAdd') }}">Dodaj Wydawnictwo</a></li>
+                        @endif
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/') }}">Strona główna</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Biblioteka</a></li>
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    @if(isset (Auth::user()->email))
-                                        <script>window.location="/login/successlogin/";</script>
+                                    
+
+                                    @if($message = Session::get('error'))
+                                            <button type ="button" data-dismiss="alert">x</button>
+                                            <strong>{{ $message }}</strong>
                                     @endif
+                                    @if(isset(Auth::user()->czy_admin))
+
+                                    <strong>Witaj {{Auth::user()->name}}</strong>
+                                    <a href="{{ url('/login/logout') }}"> Logout </a>
+                                    @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
+                                    <script type="text/javascript">window.location="/index"</script>
+                                    <strong>Witaj {{Auth::user()->name}}</strong>
+                                    <a href="{{ url('/login/logout') }}"> Logout </a>
+                                    @else
                                     <form method='post' action="{{ url('/login/checklogin') }}">
+                                        @csrf
                                         {{ csrf_field() }}
                                          <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
                                          <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
@@ -45,6 +67,7 @@
                                         <a href="{{ url('/register') }}"> Rejestracja </a>
                                     </postpos>
                                 </form>
+                                @endif
                                 </div>
                             </div>
                 </div>
@@ -59,49 +82,58 @@
         <section class="page-section portfolio" id="register">
             <div class="container">
                 <!-- News Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Zarejestruj się</h2>
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Biblioteka</h2>
                 <!-- Icon Divider-->
-                <div class="divider-custom">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-
-                <div class="flex items-center">
-                    <div class="row">
-                                <div class="col-lg-41 "><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg></div>
-                            @if($message = Session::get('info'))
-                            <strong>{{ $message }}</strong>
-                            @endif
-
-                            <div class="ml-12">
-                                <div class="col-lg-42 mr-auto">
-                                    <form method='post' action="{{ url('/register/register') }}">
+                <div class="ml-12">
+                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                                    <form method='post' action="{{('/authorAdd')}}">
                                         {{ csrf_field() }}
-                                        <input type="text" name="name" placeholder="imie" class="form-control"/> <br/>
-                                        <input type="text" name="surname" placeholder="nazwisko" class="form-control"/> <br/>
-                                        <input type="text" name="email" placeholder="e-mail" class="form-control"/> <br/>
-                                        <input type="password" name="password" placeholder="hasło" class="form-control"/>  <br/>
-                                        <input type="password" name="password_confirmation" placeholder="powtórz hasło" class="form-control"/>  <br/>
+                                        <label> imie:    </label> <input type="text" name="name" class="form-control"/>  <br/>
+                                        <label> nazwisko:    </label> <input type="text" name="surname" class="form-control"/>  <br/>
                                     </br>
-                                    <div class="row">
-                                        <input type="submit" name="submit" value="Zarejestruj" class="buttonReg"/>
-                                        <a href="{{ url('/login') }}">    Logowanie </a>
-                                    </div>
-                                    </form>
-                                    @if($message = Session::get('error'))
-                                            <button type ="button" data-dismiss="alert">x</button>
-                                            <strong>{{ $message }}</strong>
-                                    @endif
-                                    @if (count($errors) > 0)
+                                    <input type="submit" name="submit" value="Dodaj"/>
+                                </form>
+                                @if(!empty($info))
+                                <strong>{{ $info }}</strong>
+                                @endif
+                                @if (count($errors) > 0)
                                         <ul>
                                             @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                             @endforeach
                                     @endif
                                 </div>
-                            </div>
-                    </div>
+                                </div>
+                                @if($message = Session::get('error'))
+                                            <button type ="button" data-dismiss="alert">x</button>
+                                            <strong>{{ $message }}</strong>
+                                @endif
+                               
+                                <div class="table-responsive">
+                                    <table class="table">
+                                    <thead>
+                                    <th>#</th>
+                                    <th>imie</th>
+                                    <th>nazwisko</th>
+                                </thead>
+                                {{ $i=1 }}
+                                @foreach($author as $a)
+                                 <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $a->name }}</td>
+                                    <td>{{ $a->surname }}
+                                    <a href="{{ route('editAuthor',['id' => $a->id]) }}">Edytuj</a> / 
+                                    <a href="{{ route('deleteAuthor', ['id' => $a->id]) }}">Usun</a> &nbsp</td>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </table>
+                                </div>
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
             </div>
         </section>
         <!-- Footer-->

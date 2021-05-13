@@ -9,19 +9,42 @@ class CategoryController extends Controller
 {
     function index()
     {
-    	return view('book');
+        $category = Category::all();
+    	return view('categoryAdd',compact('category'));
     }
     function add(Request $request)
     {
         $this->validate($request, array(
-            'id' => 'required|alphaNum|max:3',
             'category' => 'required|max:40',
         ));
 
         Category::create(array(
-            'id' => $request->input('id'),
             'category' => $request->input('category'),
         ));
-        return redirect()->back();
+        $category = Category::all();
+
+        return view('categoryAdd',compact('category'))->with('info','Pomyślnie dodano kategorię');
+    }
+    function delete($id)
+    {
+        $category = Category::where('id',$id);
+        $category->delete();
+        $category = Category::all();
+        return view('categoryAdd',compact('category'))->with('info','Pomyślnie usunięto kategorię');
+    }
+
+    function update(Request $request)
+    {
+        $category = Category::where('id',$request->id)->first();
+        $category->category = $request->category;
+        $category->save();
+        $category = Category::all();
+        return view('categoryAdd',compact('category'))->with('info','Pomyślnie zaktualizowano kategorię');
+    }
+
+    function edit($id)
+    {
+        $edit = Category::where('id',$id)->first();
+        return view('editCategory',compact('edit'));
     }
 }

@@ -27,6 +27,15 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/authorAdd') }}">Dodaj Autora</a></li>
+                        @endif
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/categoryAdd') }}">Dodaj Kategorię</a></li>
+                        @endif
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/publishingAdd') }}">Dodaj Wydawnictwo</a></li>
+                        @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/') }}">Strona główna</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Biblioteka</a></li>
                     </ul>
@@ -38,21 +47,13 @@
                                             <button type ="button" data-dismiss="alert">x</button>
                                             <strong>{{ $message }}</strong>
                                     @endif
-
-                                    @if (count($errors) > 0)
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                            @endforeach
-                                    @endif
-                                    
                                     @if(isset(Auth::user()->czy_admin))
 
-                                    <strong>Witaj Adminie {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <strong>Witaj {{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
-                                    
-                                    <strong>Witaj Użytkowniku {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <script type="text/javascript">window.location="/index"</script>
+                                    <strong>Witaj {{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @else
                                     <form method='post' action="{{ url('/login/checklogin') }}">
@@ -88,64 +89,34 @@
                                     <form method='post' action="{{('/bookAdd')}}">
                                         {{ csrf_field() }}
                                         <!-- <label> id:    </label> <input type="text" name="id" class="form-control" />  <br/> -->
-                                        <label> isbn:    </label> <input type="text" name="isbn" class="form-control"/>  <br/>
-                                        <label> title:    </label> <input type="text" name="title" class="form-control"/>  <br/>
-                                        <label> opis:    </label> <input type="text" name="description" class="form-control"/>  <br/>
+                                        <label> isbn:   </label> <input type="text" name="isbn" class="form-control"/>  <br/>
+                                        <label> tytuł:  </label> <input type="text" name="title" class="form-control"/>  <br/>
+                                        <label> opis:   </label> <input type="text" name="description" class="form-control"/>  <br/>
                                         <label> kategoria:    </label> <input type="text" name="category_id" class="form-control"/>  <br/>
                                         <label> publish id:    </label> <input type="text" name="publishing_id" class="form-control"/>  <br/>
                                     </br>
                                     <input type="submit" name="submit" value="Dodaj"/>
                                 </form>
+                                @if(!empty($info))
+                                <strong>{{ $info }}</strong>
+                                @endif
+                                @if (count($errors) > 0)
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                            @endforeach
+                                    @endif
+                                </div>
                                 </div>
                                 @if($message = Session::get('error'))
                                             <button type ="button" data-dismiss="alert">x</button>
                                             <strong>{{ $message }}</strong>
                                 @endif
-                               <!-- <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    <form method='head' action="{{ url('/book') }}">
-                                        {{ csrf_field() }}
-                                        <label> imie:    </label> <input type="text" name="name" class="form-control"/>  <br/>
-                                        <label> nazwisko:    </label> <input type="text" name="surname" class="form-control"/>  <br/>
-                                        <label> id:    </label> <input type="text" name="id" class="form-control"/>  <br/>
-                                    </br>
-                                    <input type="submit" name="submit" value="Dodaj"/>
-                                
-                                </form>
-                                </div>-->
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    <form method='post' action="{{('/categoryAdd')}}">
-                                        {{ csrf_field() }}
-                                        <label> id:    </label> <input type="text" name="id" class="form-control" />  <br/>
-                                        <label> nazwa kategorii:    </label> <input type="text" name="category" class="form-control"/>  <br/>
-                                    </br>
-                                    <input type="submit" name="submit2" value="Dodaj"/>
-                                
-                                </form>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    <form method='post' action="{{('/publishingAdd')}}">
-                                        {{ csrf_field() }}
-                                        <label> id:    </label> <input type="text" name="id" class="form-control" />  <br/>
-                                        <label> nazwa wydawcy:    </label> <input type="text" name="name" class="form-control"/>  <br/>
-                                    </br>
-                                    <input type="submit" name="submit3" value="Dodaj"/>
-                                
-                                </form>
-                            </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
+                               
+                                <div class="table-responsive">
+                                    <table class="table">
+                                    <thead>
                                     <th>#</th>
-                                    <th>id</th>
                                     <th>isbn</th>
                                     <th>title</th>
                                     <th>description</th>
@@ -153,27 +124,21 @@
                                     <th>publishing_id</th>
                                 </thead>
                                 {{ $i=1 }}
-                                @foreach($books as $book)
-                                <tr>
+                                @foreach($book as $b)
+                                 <tr>
                                     <td>{{ $i++ }}</td>
-                                    <td>{{ $book->id }}</td>
-                                    <td>{{ $book->isbn }}</td>
-                                    <td>{{ $book->title }}<br>
-                                    <a href="{{ route('edit',['id' => $book->id]) }}">Edytuj</a> / 
-                                    <a href="{{ route('delete', ['id' => $book->id]) }}">Usun</a>
+                                    <td>{{ $b->isbn }}</td>
+                                    <td>{{ $b->title }}<br>
+                                    <a href="{{ route('edit',['id' => $b->id]) }}">Edytuj</a> / 
+                                    <a href="{{ route('delete', ['id' => $b->id]) }}">Usun</a>
                                     </td>
-                                    <td>{{ $book->description }}</td>
-                                    <td>{{ $book->category_id }}</td>
-                                    <td>{{ $book->publishing_id }}</td>
+                                    <td>{{ $b->description }}</td>
+                                    <td>{{ $b->category_id }}</td>
+                                    <td>{{ $b->publishing_id }}</td>
                                 </tr>
                                 @endforeach
                             </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
+                                </div>
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>

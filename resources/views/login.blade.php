@@ -38,21 +38,13 @@
                                             <button type ="button" data-dismiss="alert">x</button>
                                             <strong>{{ $message }}</strong>
                                     @endif
-
-                                    @if (count($errors) > 0)
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                            @endforeach
-                                    @endif
-                                    
                                     @if(isset(Auth::user()->czy_admin))
 
-                                    <strong>Witaj Adminie {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <strong>Witaj {{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
                                     
-                                    <strong>Witaj Użytkowniku {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <strong>Witaj {{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @else
                                     <form method='post' action="{{ url('/login/checklogin') }}">
@@ -99,7 +91,7 @@
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                     @if(isset (Auth::user()->email))
-                                        <script>window.location="/login/successlogin/";</script>
+                                        <script>window.location="/login";</script>
                                     @endif
 
                                     @if($message = Session::get('error'))

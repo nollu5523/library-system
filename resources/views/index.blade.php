@@ -30,6 +30,15 @@
                         @if(isset(Auth::user()->czy_admin))
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/bookAdd') }}">Dodaj Książkę</a></li>
                         @endif
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/authorAdd') }}">Dodaj Autora</a></li>
+                        @endif
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/categoryAdd') }}">Dodaj Kategorię</a></li>
+                        @endif
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/publishingAdd') }}">Dodaj Wydawnictwo</a></li>
+                        @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#news">Wiadomości</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">O nas</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Kontakt</a></li>
@@ -52,11 +61,11 @@
 
                                      @if(isset(Auth::user()->czy_admin))
 
-                                    <strong>Witaj Adminie {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <strong>Witaj {{Auth::user()->name}}  </strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
                                     
-                                    <strong>Witaj Użytkowniku {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                    <strong>Witaj {{Auth::user()->name}}  </strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @else
                                     <form method='post' action="{{ url('/login/checklogin') }}">
@@ -108,7 +117,7 @@
                 </div>
                 <!-- About Section Content-->
                 <div class="row">
-                    <div class="col-lg-4 ml-auto"><p class="lead">Twórcy strony: Adrian Wiliński, Artur Pędziwiatr, Łukasz Justyński. Jesteśmy studentami informatyki na wydziale Matematyki i Informatyki UŁ. A to jest nasza testowa strony e-biblioteki. </p></div>
+                    <div class="col-lg-4 ml-auto"><p class="lead">Twórcy strony: Adrian Wiliński, Artur Pędziwiatr, Łukasz Justyński. Jesteśmy studentami informatyki na wydziale Matematyki i Informatyki UŁ. A to jest nasza testowa strona e-biblioteki. </p></div>
                     <div class="col-lg-4 mr-auto"><p class="lead">Platformy do wypożyczania książek. Mamy nadzieję że nasz projekt się spodobał i zostawisz nam pozytywną ocenę!</p></div>
                 </div>
             </div>

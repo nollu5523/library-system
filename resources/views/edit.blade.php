@@ -1,4 +1,4 @@
-               
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                     <form method='post' action="{{ route('update') }}">
                                         {{ csrf_field() }}
@@ -10,5 +10,6 @@
                                         <label> publish id:    </label> <input type="text" name="publishing_id" value="{{ $edit->publishing_id }}" class="form-control"/>  <br/>
                                     </br>
                                     <input type="submit" name="edycja" value="zapisz"/>
+                                    <a href="{{ url('/bookAdd') }}"> Cofnij </a>
                                 </form>
                                 </div>
