@@ -28,44 +28,40 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
                         @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/bookAdd') }}">Dodaj Książkę</a></li>
-                        @endif
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/authorAdd') }}">Dodaj Autora</a></li>
-                        @endif
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/categoryAdd') }}">Dodaj Kategorię</a></li>
-                        @endif
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/publishingAdd') }}">Dodaj Wydawnictwo</a></li>
+                        <div class="dropdown">
+                            <a class="dra" href="#">Interfejs admina</a>
+                            <ul>
+                                <li><a class="dra" href="{{ url('/bookAdd') }}">Książki</a></li>
+                                <li><a class="dra" href="{{ url('/categoryAdd') }}">Kategorie</a></li>
+                                <li><a class="dra" href="{{ url('/authorAdd') }}">Autorzy</a></li>
+                                <li><a class="dra" href="{{ url('/publishingAdd') }}">Wydawnictwoy</a></li>
+                            </ul>
+                        </div>
                         @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#news">Wiadomości</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">O nas</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Kontakt</a></li>
-                        @if(!isset(Auth::user()->email))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/login') }}">Zaloguj się</a></li>
-                        @endif
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    
 
-                                    @if($message = Session::get('error'))
-                                            <button type ="button" data-dismiss="alert">x</button>
-                                            <strong>{{ $message }}</strong>
-                                    @endif
-                                    
-
-                                     @if(isset(Auth::user()->czy_admin))
-                                    <strong>{{Auth::user()->name}}  </strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
-                                    
-                                    <strong>{{Auth::user()->name}}  </strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
+                                @if(isset(Auth::user()->email))
+                                    <div class="blockLog">
+                                        <img class="photoLog" src="../assets/img/man.png"> </img>
+                                        <strong class="textLog"> Witaj, {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                        <div class="posLog"><a  href="{{ url('/login/logout') }}"> Wyloguj się </a></div>
+                                    </div>
                                     @else
-                                    
-                                    
+                                    <form method='post' action="{{ url('/login/checklogin') }}">
+                                        @csrf
+                                        {{ csrf_field() }}
+                                         <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
+                                         <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
+                                    </br>
+                                    <postpos>
+                                        <input type="submit" name="submit" value="Login" class="buttonLog"/>
+                                        <a href="{{ url('/register') }}"> Rejestracja </a>
+                                    </postpos>
                                 </form>
                                 @endif
                                 </div>
@@ -170,7 +166,7 @@
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Lokalizacja</h4>
                         <p class="lead mb-0">
-                        Stefana Banacha 22, 
+                        Stefana Banacha 22,
                             <br />
                             90-238 Łódź
                         </p>

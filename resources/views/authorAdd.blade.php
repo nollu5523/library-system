@@ -28,34 +28,42 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
                         @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/bookAdd') }}">Dodaj Książkę</a></li>
-                        @endif
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/categoryAdd') }}">Dodaj Kategorię</a></li>
-                        @endif
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/publishingAdd') }}">Dodaj Wydawnictwo</a></li>
+                        <div class="dropdown">
+                            <a class="dra" href="#">Interfejs admina</a>
+                            <ul>
+                                <li><a class="dra" href="{{ url('/bookAdd') }}">Książki</a></li>
+                                <li><a class="dra" href="{{ url('/categoryAdd') }}">Kategorie</a></li>
+                                <li><a class="dra" href="{{ url('/authorAdd') }}">Autorzy</a></li>
+                                <li><a class="dra" href="{{ url('/publishingAdd') }}">Wydawnictwoy</a></li>
+                            </ul>
+                        </div>
                         @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/') }}">Strona główna</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Biblioteka</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Autorzy</a></li>
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    
 
-                                    @if($message = Session::get('error'))
-                                            <button type ="button" data-dismiss="alert">x</button>
-                                            <strong>{{ $message }}</strong>
-                                    @endif
-                                    @if(isset(Auth::user()->czy_admin))
 
-                                    <strong>{{Auth::user()->name}}</strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
-                                    <script type="text/javascript">window.location="/index"</script>
-                                    <strong>{{Auth::user()->name}}</strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @endif
+                                @if(isset(Auth::user()->email))
+                                    <div class="blockLog">
+                                        <img class="photoLog" src="../assets/img/man.png"> </img>
+                                        <strong class="textLog"> Witaj, {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                        <div class="posLog"><a  href="{{ url('/login/logout') }}"> Wyloguj się </a></div>
+                                    </div>
+                                    @else
+                                    <form method='post' action="{{ url('/login/checklogin') }}">
+                                        @csrf
+                                        {{ csrf_field() }}
+                                         <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
+                                         <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
+                                    </br>
+                                    <postpos>
+                                        <input type="submit" name="submit" value="Login" class="buttonLog"/>
+                                        <a href="{{ url('/register') }}"> Rejestracja </a>
+                                    </postpos>
+                                </form>
+                                @endif
                                 </div>
                             </div>
                 </div>
@@ -70,16 +78,16 @@
         <section class="page-section portfolio" id="register">
             <div class="container">
                 <!-- News Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Biblioteka</h2>
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Dodawanie autorów</h2>
                 <!-- Icon Divider-->
                 <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                     <form method='post' action="{{('/authorAdd')}}">
                                         {{ csrf_field() }}
-                                        <label> imie:    </label> <input type="text" name="name" class="form-control"/>  <br/>
-                                        <label> nazwisko:    </label> <input type="text" name="surname" class="form-control"/>  <br/>
+                                        <label class="posesTag"> Imie:    </label> <input type="text" name="name" class="form-control devolt"/>  <br/>
+                                        <label class="posesTag"> Nazwisko:    </label> <input type="text" name="surname" class="form-control devolt"/>  <br/>
+                                        <input type="submit" name="submit" class="btn btn-primary btn-xl-lite right-poster" value="Dodaj"/>
                                     </br>
-                                    <input type="submit" name="submit" value="Dodaj"/>
                                 </form>
                                 @if(!empty($info))
                                 <strong>{{ $info }}</strong>
@@ -96,32 +104,29 @@
                                             <button type ="button" data-dismiss="alert">x</button>
                                             <strong>{{ $message }}</strong>
                                 @endif
-                               
-                                <div class="table-responsive">
+
+                                <div class="table-responsive wraper-author">
                                     <table class="table">
                                     <thead>
                                     <th>#</th>
-                                    <th>imie</th>
-                                    <th>nazwisko</th>
+                                    <th>Imie</th>
+                                    <th>Nazwisko</th>
+                                    <th>Edycja/Usuwanie</th>
                                 </thead>
-                                {{ $i=1 }}
+                                <?{{ $i=1 }}>
                                 @foreach($author as $a)
                                  <tr>
                                     <td>{{ $i++ }}</td>
                                     <td>{{ $a->name }}</td>
-                                    <td>{{ $a->surname }}
-                                    <a href="{{ route('editAuthor',['id' => $a->id]) }}">Edytuj</a> / 
-                                    <a href="{{ route('deleteAuthor', ['id' => $a->id]) }}">Usun</a></td>
+                                    <td>{{ $a->surname }}</td>
+                                    <td>
+                                    <a class="crossapp" href="{{ route('editAuthor',['id' => $a->id]) }}"></a>
+                                    <a class="crossdel" href="{{ route('deleteAuthor', ['id' => $a->id]) }}">X</a>
                                     </td>
                                 </tr>
                                 @endforeach
                             </table>
                                 </div>
-                <div class="divider-custom">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
             </div>
         </section>
         <!-- Footer-->
@@ -132,7 +137,7 @@
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Lokalizacja</h4>
                         <p class="lead mb-0">
-                        Stefana Banacha 22, 
+                        Stefana Banacha 22,
                             <br />
                             90-238 Łódź
                         </p>

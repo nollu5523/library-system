@@ -32,19 +32,25 @@
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    @if(isset (Auth::user()->email))
-                                        <script>window.location="/login/successlogin/";</script>
-                                    @endif
+                                @if(isset(Auth::user()->email))
+                                    <div class="blockLog">
+                                        <img class="photoLog" src="../assets/img/man.png"> </img>
+                                        <strong class="textLog"> Witaj, {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                        <div class="posLog"><a  href="{{ url('/login/logout') }}"> Wyloguj się </a></div>
+                                    </div>
+                                    @else
                                     <form method='post' action="{{ url('/login/checklogin') }}">
+                                        @csrf
                                         {{ csrf_field() }}
                                          <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
                                          <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
                                     </br>
-                                    <postpos> 
+                                    <postpos>
                                         <input type="submit" name="submit" value="Login" class="buttonLog"/>
                                         <a href="{{ url('/register') }}"> Rejestracja </a>
                                     </postpos>
                                 </form>
+                                @endif
                                 </div>
                             </div>
                 </div>
@@ -112,7 +118,7 @@
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Lokalizacja</h4>
                         <p class="lead mb-0">
-                        Stefana Banacha 22, 
+                        Stefana Banacha 22,
                             <br />
                             90-238 Łódź
                         </p>

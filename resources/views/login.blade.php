@@ -35,15 +35,24 @@
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    @if(isset(Auth::user()->czy_admin))
-
-                                    <strong>{{Auth::user()->name}}</strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
-                                    
-                                    <strong>{{Auth::user()->name}}</strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    
+                                @if(isset(Auth::user()->email))
+                                    <div class="blockLog">
+                                        <img class="photoLog" src="../assets/img/man.png"> </img>
+                                        <strong class="textLog"> Witaj, {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                        <div class="posLog"><a  href="{{ url('/login/logout') }}"> Wyloguj się </a></div>
+                                    </div>
+                                    @else
+                                    <form method='post' action="{{ url('/login/checklogin') }}">
+                                        @csrf
+                                        {{ csrf_field() }}
+                                         <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
+                                         <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
+                                    </br>
+                                    <postpos>
+                                        <input type="submit" name="submit" value="Login" class="buttonLog"/>
+                                        <a href="{{ url('/register') }}"> Rejestracja </a>
+                                    </postpos>
+                                </form>
                                 @endif
                                 </div>
                             </div>
@@ -89,8 +98,8 @@
                                     </br>
                                     <form method='post' action="{{ url('/login/checklogin') }}">
                                         {{ csrf_field() }}
-                                        <input type="email" name="email" placeholder="e-mail" class="form-control"/> 
-                                        <input type="password" name="password" placeholder="hasło" class="form-control"/> 
+                                        <input type="email" name="email" placeholder="e-mail" class="form-control"/>
+                                        <input type="password" name="password" placeholder="hasło" class="form-control"/>
                                     </br>
                                     @if($message = Session::get('error'))
                                             <strong>{{ $message }}</strong>
@@ -100,7 +109,7 @@
                                     <input type="submit" name="submit" value="Login" class="buttonReg"/>
                                     <a href="{{ url('/register') }}"> Rejestracja </a>
                                 </form>
-                                    
+
                                 </div>
                             </div>
                     </div>
@@ -114,7 +123,7 @@
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Lokalizacja</h4>
                         <p class="lead mb-0">
-                        Stefana Banacha 22, 
+                        Stefana Banacha 22,
                             <br />
                             90-238 Łódź
                         </p>

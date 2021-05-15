@@ -28,44 +28,45 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
                         @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/bookAdd') }}">Dodaj Książkę</a></li>
-                        @endif
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/authorAdd') }}">Dodaj Autora</a></li>
-                        @endif
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/categoryAdd') }}">Dodaj Kategorię</a></li>
-                        @endif
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/publishingAdd') }}">Dodaj Wydawnictwo</a></li>
+                        <div class="dropdown">
+                            <a class="dra" href="#">Interfejs admina</a>
+                            <ul>
+                                <li><a class="dra" href="{{ url('/bookAdd') }}">Książki</a></li>
+                                <li><a class="dra" href="{{ url('/categoryAdd') }}">Kategorie</a></li>
+                                <li><a class="dra" href="{{ url('/authorAdd') }}">Autorzy</a></li>
+                                <li><a class="dra" href="{{ url('/publishingAdd') }}">Wydawnictwoy</a></li>
+                            </ul>
+                        </div>
                         @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/') }}">Strona główna</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Biblioteka</a></li>
-                        @if(!isset(Auth::user()->email))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/login') }}">Zaloguj się</a></li>
-                        @endif
+
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    
 
-                                    @if($message = Session::get('error'))
-                                            <button type ="button" data-dismiss="alert">x</button>
-                                            <strong>{{ $message }}</strong>
-                                    @endif
-                                    @if(isset(Auth::user()->czy_admin))
 
-                                    <strong>{{Auth::user()->name}} </strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
-                                    
-                                    <strong>{{Auth::user()->name}} </strong>
-                                    <a href="{{ url('/login/logout') }}"> Logout </a>
+                                @if(isset(Auth::user()->email))
+                                    <div class="blockLog">
+                                        <img class="photoLog" src="../assets/img/man.png"> </img>
+                                        <strong class="textLog"> Witaj, {{Auth::user()->name}} {{Auth::user()->surname}} </strong>
+                                        <div class="posLog"><a  href="{{ url('/login/logout') }}"> Wyloguj się </a></div>
+                                    </div>
                                     @else
-                                    
+                                    <form method='post' action="{{ url('/login/checklogin') }}">
+                                        @csrf
+                                        {{ csrf_field() }}
+                                         <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
+                                         <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
+                                    </br>
+                                    <postpos>
+                                        <input type="submit" name="submit" value="Login" class="buttonLog"/>
+                                        <a href="{{ url('/register') }}"> Rejestracja </a>
+                                    </postpos>
+                                </form>
                                 @endif
                                 </div>
-                    </div> 
+                    </div>
             </div>
         </nav>
         <!-- Masthead-->
@@ -75,39 +76,48 @@
         </header>
 
         <section class="page-section portfolio" id="register">
-            <div class="container">
-                <!-- News Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Biblioteka</h2>
-                <!-- Icon Divider-->
-                <div class="divider-custom">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-                <div style="background-color: rgb(230 230 250)">
-                    <form method="get" action="/bookResults">
-                        <input type="text" name="bookTitle" style="width: 94.7%" placeholder="Wpisz szukaną frazę"><button type="submit">Szukaj</button></form><a href="/book">Pokaż wszystkie</a></div>
-                <div style="float:left; border: dotted; background-color: gray; height:300px; width: 30%;">
-                    @foreach($category as $c)
-                    <a href="{{ route('categoryFilter',['id'=>$c->id]) }}">{{$c->category}}</a><br>
-                    @endforeach
-                </div>
-                <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
-                    @foreach($book as $b)
-                    <li><a href="{{ route('details',['title'=>$b->title]) }}">{{$b->title}}</a></li>
-                    @endforeach
-                </div>
-                <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
-                    
-                    @foreach($author as $a)
-                    <a href="{{ route('authorBooks',['id'=>$a->id]) }}">{{$a->name}} {{$a->surname}}</a><br>
-                    @endforeach
-                    
-                    
-                    
-                </div>
+        <div class="container">
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Biblioteka</h2>
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+            <div class="ml-12">
+                <div class="wraper ">
+                    <div class="la-g4">
+                        <form method="get" action="/categoryFilter">
+                        @foreach($category as $c)
+                                <input type="checkbox" id='toggle' class="visually-hidden" name="category[]" value="{{$c->id}}">
+                                <label for="toggle" ><a href="{{ route('categoryFilter',['id'=>$c->id]) }}">{{$c->category}}</a><br></label>
+                            @endforeach
+                            <button type="submit" class="btn btn-primary btn-xl-lite right-filter" >Filtruj</button>
+                        </form>
+                    </div>
 
-                <div style="clear:both;"></div>
+
+                    <div class="la-g4prime">
+                        <div >
+                            <form method="get" action="/bookResults">
+                                <input type="text" name="bookTitle" class="form-control textsrc" placeholder="Wpisz szukaną frazę">
+                                <div style="float: right;"><button type="submit" class="btn btn-primary btn-xl-lite">Szukaj</button></div>
+                            </form>
+                        </div>
+
+                        <div class="la-g5">
+                            @foreach($book as $b )
+                            <div class="position" data-toggle="modal" data-target="#portfolioModal1">
+                                <div class="imgtree"></div>
+                                <div class="pretitle"> <h2>{{$b->title}} </h2> </div>
+                                <div class="predescription">{{$b->description}} </div>
+                                <div class="preauthor">Autor: {{$b->name}} {{$b->surname}} </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <div style="clear:both;"></div>
+                    </div>
+                </div>
             </div>
         </section>
         <!-- Footer-->
@@ -118,7 +128,7 @@
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Lokalizacja</h4>
                         <p class="lead mb-0">
-                        Stefana Banacha 22, 
+                        Stefana Banacha 22,
                             <br />
                             90-238 Łódź
                         </p>
