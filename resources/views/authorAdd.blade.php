@@ -49,25 +49,13 @@
                                     @endif
                                     @if(isset(Auth::user()->czy_admin))
 
-                                    <strong>Witaj {{Auth::user()->name}}</strong>
+                                    <strong>{{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
                                     <script type="text/javascript">window.location="/index"</script>
-                                    <strong>Witaj {{Auth::user()->name}}</strong>
+                                    <strong>{{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @else
-                                    <form method='post' action="{{ url('/login/checklogin') }}">
-                                        @csrf
-                                        {{ csrf_field() }}
-                                         <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
-                                         <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
-                                    </br>
-                                    <postpos> 
-                                        <input type="submit" name="submit" value="Login" class="buttonLog"/>
-                                        <a href="{{ url('/register') }}"> Rejestracja </a>
-                                    </postpos>
-                                </form>
-                                @endif
+                                    @endif
                                 </div>
                             </div>
                 </div>
@@ -123,7 +111,7 @@
                                     <td>{{ $a->name }}</td>
                                     <td>{{ $a->surname }}
                                     <a href="{{ route('editAuthor',['id' => $a->id]) }}">Edytuj</a> / 
-                                    <a href="{{ route('deleteAuthor', ['id' => $a->id]) }}">Usun</a> &nbsp</td>
+                                    <a href="{{ route('deleteAuthor', ['id' => $a->id]) }}">Usun</a></td>
                                     </td>
                                 </tr>
                                 @endforeach

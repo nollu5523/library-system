@@ -14,4 +14,5 @@ class Author extends Model
     	'name',
     	'surname',
     	];
+
 }

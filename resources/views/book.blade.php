@@ -41,6 +41,9 @@
                         @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/') }}">Strona główna</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Biblioteka</a></li>
+                        @if(!isset(Auth::user()->email))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/login') }}">Zaloguj się</a></li>
+                        @endif
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
@@ -52,24 +55,14 @@
                                     @endif
                                     @if(isset(Auth::user()->czy_admin))
 
-                                    <strong>Witaj {{Auth::user()->name}} </strong>
+                                    <strong>{{Auth::user()->name}} </strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
                                     
-                                    <strong>Witaj {{Auth::user()->name}} </strong>
+                                    <strong>{{Auth::user()->name}} </strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @else
-                                    <form method='post' action="{{ url('/login/checklogin') }}">
-                                        @csrf
-                                        {{ csrf_field() }}
-                                         <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
-                                         <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
-                                    </br>
-                                    <postpos> 
-                                        <input type="submit" name="submit" value="Login" class="buttonLog"/>
-                                        <a href="{{ url('/register') }}"> Rejestracja </a>
-                                    </postpos>
-                                </form>
+                                    
                                 @endif
                                 </div>
                     </div> 
@@ -93,27 +86,25 @@
                 </div>
                 <div style="background-color: rgb(230 230 250)">
                     <form method="get" action="/bookResults">
-                        <input type="text" name="bookTitle" style="width: 94.7%" placeholder="Wpisz szukaną frazę"><button type="submit">Szukaj</button></form></div>
+                        <input type="text" name="bookTitle" style="width: 94.7%" placeholder="Wpisz szukaną frazę"><button type="submit">Szukaj</button></form><a href="/book">Pokaż wszystkie</a></div>
                 <div style="float:left; border: dotted; background-color: gray; height:300px; width: 30%;">
-                  <form method="get" action="/categoryFilter">
-                  @foreach($category as $c)
-                  <input type="radio" name="category[]" value="{{$c->id}}"><label>{{$c->category}}</label></input></br>
-                  @endforeach
-                  <button type="submit" >Filtruj</button>
-              </form>
+                    @foreach($category as $c)
+                    <a href="{{ route('categoryFilter',['id'=>$c->id]) }}">{{$c->category}}</a><br>
+                    @endforeach
                 </div>
                 <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
                     @foreach($book as $b)
-                    <li>{{$b->title}}</li>
+                    <li><a href="{{ route('details',['title'=>$b->title]) }}">{{$b->title}}</a></li>
                     @endforeach
                 </div>
                 <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
-                    <form method="get" action="/author">
+                    
                     @foreach($author as $a)
-                    <input type="radio" name="author[]" value="{{$a->surname}}"><label>{{$a->name}} {{$a->surname}}</label></input></br>
+                    <a href="{{ route('authorBooks',['id'=>$a->id]) }}">{{$a->name}} {{$a->surname}}</a><br>
                     @endforeach
-                    <button type="submit" >Szukaj książek</button>
-                    </form>
+                    
+                    
+                    
                 </div>
 
                 <div style="clear:both;"></div>

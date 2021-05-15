@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use DB;
 
 class BookController extends Controller
 {
@@ -58,5 +59,12 @@ class BookController extends Controller
         $book = Book::all();
 
         return view('bookAdd',compact('book'))->with('info','Pomyślnie zaktualizowano książkę');
+    }
+
+    function details($title)
+    {
+        $book = DB::table('books')->select('title','isbn','authors.name','authors.surname','categories.category','description')->join('authors_books','authors_books.book_id','=','books.id')->join('categories','categories.id','=','books.category_id')->join('authors','authors.id','=','authors_books.author_id')->where('title','like',$title)->get();
+
+        return view('author',compact('book'));
     }
 }

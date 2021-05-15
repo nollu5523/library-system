@@ -29,35 +29,21 @@
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url('/book') }}">Książki</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{{ url('/') }}">Strona główna</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Logowanie</a></li>
+                        @if(!isset(Auth::user()->email))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/login') }}">Zaloguj się</a></li>
+                        @endif
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    
-
-                                    @if($message = Session::get('error'))
-                                            <button type ="button" data-dismiss="alert">x</button>
-                                            <strong>{{ $message }}</strong>
-                                    @endif
                                     @if(isset(Auth::user()->czy_admin))
 
-                                    <strong>Witaj {{Auth::user()->name}}</strong>
+                                    <strong>{{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
                                     
-                                    <strong>Witaj {{Auth::user()->name}}</strong>
+                                    <strong>{{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @else
-                                    <form method='post' action="{{ url('/login/checklogin') }}">
-                                        @csrf
-                                        {{ csrf_field() }}
-                                         <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
-                                         <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
-                                    </br>
-                                    <postpos> 
-                                        <input type="submit" name="submit" value="Login" class="buttonLog"/>
-                                        <a href="{{ url('/register') }}"> Rejestracja </a>
-                                    </postpos>
-                                </form>
+                                    
                                 @endif
                                 </div>
                             </div>
@@ -93,13 +79,7 @@
                                     @if(isset (Auth::user()->email))
                                         <script>window.location="/login";</script>
                                     @endif
-
-                                    @if($message = Session::get('error'))
-                                            <button type ="button" data-dismiss="alert">x</button>
-                                            <strong>{{ $message }}</strong>
-                                    @endif
-
-                                    @if (count($errors) > 0)
+                                         @if (count($errors) > 0)
                                         <ul>
                                             @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
@@ -109,13 +89,18 @@
                                     </br>
                                     <form method='post' action="{{ url('/login/checklogin') }}">
                                         {{ csrf_field() }}
-                                        <input type="email" name="email" placeholder="e-mail" class="form-control"/> </li>
-                                        <input type="password" name="password" placeholder="hasło" class="form-control"/> </li></li>
+                                        <input type="email" name="email" placeholder="e-mail" class="form-control"/> 
+                                        <input type="password" name="password" placeholder="hasło" class="form-control"/> 
                                     </br>
+                                    @if($message = Session::get('error'))
+                                            <strong>{{ $message }}</strong>
+                                    @endif
                                     </br>
+                                    <br>
                                     <input type="submit" name="submit" value="Login" class="buttonReg"/>
                                     <a href="{{ url('/register') }}"> Rejestracja </a>
                                 </form>
+                                    
                                 </div>
                             </div>
                     </div>

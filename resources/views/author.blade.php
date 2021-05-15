@@ -67,19 +67,7 @@
                                     
                                     <strong>Witaj {{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
-                                    @else
-                                    <form method='post' action="{{ url('/login/checklogin') }}">
-                                        @csrf
-                                        {{ csrf_field() }}
-                                         <input type="email" name="email" placeholder="Adres email" class="form-control"/> </li>
-                                         <input type="password" name="password" placeholder="Hasło" class="form-control"/> </li></li>
-                                    </br>
-                                    <postpos> 
-                                        <input type="submit" name="submit" value="Login" class="buttonLog"/>
-                                        <a href="{{ url('/register') }}"> Rejestracja </a>
-                                    </postpos>
-                                </form>
-                                @endif
+                                    @endif
                                 </div>
                     </div> 
             </div>
@@ -102,20 +90,22 @@
                 </div>
                 <div style="background-color: rgb(230 230 250)">
                     <form method="get" action="/bookResults">
-                        <input type="text" name="bookTitle" style="width: 94.7%" placeholder="Wpisz szukaną frazę"><button type="submit">Szukaj</button></form></div>
+                        <input type="text" name="bookTitle" style="width: 94.7%" placeholder="Wpisz szukaną frazę"><button type="submit">Szukaj</button></form><a href="/book">Pokaż wszystkie</a></div>
                 <div style="float:left; border: dotted; background-color: gray; height:300px; width: 30%;">
-                  @foreach($author as $a)
-                  {{$a->name}} {{$a->surname}}
+                  @foreach($book as $b)
+                  {{$b->name}} {{$b->surname}}<br>
                   @endforeach
                 </div>
                 <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
                     @foreach($book as $b)
-                    <li>{{$b->title}}</li>
+                    <li>{{$b->isbn}} &nbsp <a href="{{ route('details', ['title' => $b->title]) }}"> "{{$b->title}}" </a></li>
                     @endforeach
 
                 </div>
                 <div style="float:left; border: dotted; background-color: rgb(147 112 219); height:300px; width: 35%;">
-                    
+                    @foreach($book as $b)
+                    <li>{{$b->description}}</li>
+                    @endforeach
                 </div>
 
                 <div style="clear:both;"></div>

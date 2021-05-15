@@ -30,7 +30,7 @@ class LoginController extends Controller
     	}
     	else
     	{
-    		return back()->with('error', 'bledny email lub haslo');
+    		return view('login')->with('error', 'bledny email lub haslo');
     	}
     }
 
