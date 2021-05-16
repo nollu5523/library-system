@@ -34,7 +34,7 @@
                                 <li><a class="dra" href="{{ url('/bookAdd') }}">Książki</a></li>
                                 <li><a class="dra" href="{{ url('/categoryAdd') }}">Kategorie</a></li>
                                 <li><a class="dra" href="{{ url('/authorAdd') }}">Autorzy</a></li>
-                                <li><a class="dra" href="{{ url('/publishingAdd') }}">Wydawnictwoy</a></li>
+                                <li><a class="dra" href="{{ url('/publishingAdd') }}">Wydawnictwo</a></li>
                             </ul>
                         </div>
                         @endif
@@ -128,16 +128,17 @@
                                             </thead>
                                             <?{{ $i=1 }}>
                                             @foreach($book as $b)
-                                            <tr>
-                                                <td>{{ $i++ }}</td>
-                                                <td>{{ $b->isbn }}</td>
-                                                <td>{{ $b->title }}</td>
-                                                <td>{{ $b->category_id }}</td>
-                                                <td>{{ $b->publishing_id }}</td>
-                                                <td> <a class="crossapp" href="{{ route('edit',['id' => $b->id]) }}"></a>
-                                                <a class="crossdel" href="{{ route('delete', ['id' => $b->id]) }}">X</a> </td>
-                                            </tr>
+                                                <tr>
+                                                    <td>{{ $i++ }}</td>
+                                                    <td>{{ $b->isbn }}</td>
+                                                    <td>{{ $b->title }}</td>
+                                                    <td>{{ $b->category_id }}</td>
+                                                    <td>{{ $b->publishing_id }}</td>
+                                                    <td> <a class="crossapp" href="{{ route('edit',['id' => $b->id]) }}"></a>
+                                                    <a class="crossdel" href="{{ route('delete', ['id' => $b->id]) }}">X</a> </td>
+                                                </tr>
                                             @endforeach
+
                                             </table>
                                         </div>
 
@@ -180,6 +181,7 @@
         <div class="scroll-to-top d-lg-none position-fixed">
             <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up"></i></a>
         </div>
+
         <!-- Bootstrap core JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>

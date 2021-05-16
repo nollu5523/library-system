@@ -3346,6 +3346,10 @@ boxall{
     float: right;
 }
 
+.xl{
+    margin-left: 250px;
+}
+
 
 .pretitle{
     position: absolute;

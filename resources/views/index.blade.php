@@ -34,7 +34,7 @@
                                 <li><a class="dra" href="{{ url('/bookAdd') }}">Książki</a></li>
                                 <li><a class="dra" href="{{ url('/categoryAdd') }}">Kategorie</a></li>
                                 <li><a class="dra" href="{{ url('/authorAdd') }}">Autorzy</a></li>
-                                <li><a class="dra" href="{{ url('/publishingAdd') }}">Wydawnictwoy</a></li>
+                                <li><a class="dra" href="{{ url('/publishingAdd') }}">Wydawnictwo</a></li>
                             </ul>
                         </div>
                         @endif

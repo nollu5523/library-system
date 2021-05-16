@@ -28,7 +28,7 @@ class SearchEngine extends Controller
     function findBook()
     {
     	$category = Category::all();
-        $book = DB::table('books')->select('books.id','books.title','books.description','authors.name','authors.id','authors.surname')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->where( function ($query) {
+        $book = DB::table('books')->select('books.id','books.title','books.description','books.isbn','authors.name','authors.id','authors.surname')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->where( function ($query) {
             $query->where('title','like','%' . request('bookTitle') . '%')->groupBy('authors_books','id');
     })->get();
         $author = DB::table('authors')->where('name', 'like' , '%' . request('bookTitle') . '%')->orWhere('surname','like','%' . request('bookTitle') . '%')->get();
