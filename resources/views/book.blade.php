@@ -88,8 +88,7 @@
                     <div class="la-g4">
                         <form method="get" action="/categoryFilter">
                         @foreach($category as $c)
-                                <input type="checkbox" id='toggle' class="visually-hidden" name="category[]" value="{{$c->id}}">
-                                <label for="toggle" ><a href="{{ route('categoryFilter',['id'=>$c->id]) }}">{{$c->category}}</a><br></label>
+                                <label><a href="{{ route('categoryFilter',['id'=>$c->id]) }}">{{$c->category}}</a><br></label>
                             @endforeach
                             <button type="submit" class="btn btn-primary btn-xl-lite right-filter" >Filtruj</button>
                         </form>
@@ -105,12 +104,25 @@
                         </div>
 
                         <div class="la-g5">
+
                             @foreach($book as $b )
-                            <div class="position" data-toggle="modal" data-target="#portfolioModal1">
-                                <div class="imgtree"></div>
-                                <div class="pretitle"> <h2>{{$b->title}} </h2> </div>
-                                <div class="predescription">{{$b->description}} </div>
-                                <div class="preauthor">Autor: {{$b->name}} {{$b->surname}} </div>
+                           <div class="position">
+                                <boxprev>
+                                    <div class="imgtree"></div>
+                                    <div class="pretitle"> <h3>{{$b->title}} </h3> </div>
+                                    <div class="predescription">{{$b->description}} </div>
+                                    <div class="preauthor">Autor: {{$b->name}} {{$b->surname}} </div>
+                                </boxprev>
+
+                                <boxnext >
+                                    <div class="imgtree"></div>
+                                    <div class="pretitle"> <h3>Tytuł: {{$b->title}} </h3> </div> </br>
+                                    <div class="preauthornext">Autor: {{$b->name}} {{$b->surname}} </div>
+                                    <div class="preisbnnext"> ISBN: {{$b->isbn}} </div></br>
+                                    <div class="rgth" ><h3>Opis: </h3></div>
+                                    <div class="predescriptionnext">{{$b->description}} </div></br>
+                                    <div class="btnext" ><button type="submit" class="btn btn-primary btn-xl-lite reserv">Wypożycz</button></div>
+                                </boxnext>
                             </div>
                             @endforeach
                         </div>

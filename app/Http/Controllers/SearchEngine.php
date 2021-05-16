@@ -41,7 +41,7 @@ class SearchEngine extends Controller
        // $requestCategory = $request->input('category');
         $category = Category::all();
 
-        $book = DB::table('books')->select('books.id','books.title','books.description','authors.name','authors.id','authors.surname')->join('categories','categories.id','=','books.category_id')->where('categories.id','=', $id)->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->get();
+        $book = DB::table('books')->select('books.id','books.title','books.description','books.isbn','authors.name','authors.id','authors.surname')->join('categories','categories.id','=','books.category_id')->where('categories.id','=', $id)->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->get();
 
         $author = DB::table('authors')->select('authors.name','authors.surname','authors.id')->join('authors_books', 'authors_books.author_id','=','authors.id')->join('books','books.id','=','authors_books.book_id')->join('categories','categories.id','=','books.category_id')->where('categories.id','=', $id)->get();
 
