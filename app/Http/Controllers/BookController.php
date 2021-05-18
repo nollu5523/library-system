@@ -4,42 +4,54 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Category;
+use App\Models\Publishing;
 use DB;
 
 class BookController extends Controller
 {
 	function index()
     {
-    	$book = Book::all();
-        return view('bookAdd',compact('book'));
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','name')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->get();
+
+        $categoryList = Category::select('id','category')->get();
+        $publishingList = Publishing::select('id','name')->get();
+
+        return view('bookAdd',compact('book','categoryList','publishingList'));
     }
     function add(Request $request)
     {
-        
+        $categoryList = Category::select('id','category')->get();
+        $publishingList = Publishing::select('id','name')->get();
+        $category_id = DB::table('categories')->select('id')->where('category',$request->category)->value('id');
+        $publishing_id = DB::table('publishings')->select('id')->where('name',$request->publishing)->value('id');
+
         $this->validate($request, array(
             'isbn' => 'required|max:40',
             'title' => 'required|max:100',
             'description' => 'required|max:1000',
-            'category_id' => 'required|alphaNum|max:40',
-    		'publishing_id' => 'required|alphaNum|max:40',
+
         ));
 
         Book::create(array(
             'isbn' => $request->input('isbn'),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
-            'category_id' => $request->input('category_id'),
-            'publishing_id' => $request->input('publishing_id'),
+            'category_id' => $category_id,
+            'publishing_id' => $publishing_id,
         ));
         $book = Book::all();
-        return view('bookAdd',compact('book'))->with('info','Pomyślnie dodano książkę');
+
+        return view('bookAdd',compact('book','categoryList','publishingList'))->with('info','Pomyślnie dodano książkę');
     }
     public function delete($id)
     {
+        $categoryList = Category::select('id','category')->get();
+        $publishingList = Publishing::select('id','name')->get();
         $delete = Book::where('id',$id);
         $delete->delete();
         $book = Book::all();
-        return view('bookAdd',compact('book'))->with('info','Pomyślnie usunięto książkę');
+        return view('bookAdd',compact('book','categoryList','publishingList'))->with('info','Pomyślnie usunięto książkę');
     }
     public function edit($id)
     {
@@ -48,6 +60,8 @@ class BookController extends Controller
     }
     public function update(Request $request)
     {
+        $categoryList = Category::select('id','category')->get();
+        $publishingList = Publishing::select('id','name')->get();
         $save = Book::where('id',$request->id)->first();
         $save->isbn = $request->isbn;
         $save->title = $request->title;
@@ -58,7 +72,7 @@ class BookController extends Controller
 
         $book = Book::all();
 
-        return view('bookAdd',compact('book'))->with('info','Pomyślnie zaktualizowano książkę');
+        return view('bookAdd',compact('book','categoryList','publishingList'))->with('info','Pomyślnie zaktualizowano książkę');
     }
 
     function details($title)
@@ -68,3 +82,4 @@ class BookController extends Controller
         return view('author',compact('book'));
     }
 }
+

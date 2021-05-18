@@ -121,7 +121,9 @@
                                     <div class="preisbnnext"> ISBN: {{$b->isbn}} </div></br>
                                     <div class="rgth" ><h3>Opis: </h3></div>
                                     <div class="predescriptionnext">{{$b->description}} </div></br>
+                                    @if(isset(Auth::user()->email))
                                     <div class="btnext" ><button type="submit" class="btn btn-primary btn-xl-lite reserv">Wypożycz</button></div>
+                                    @endif
                                 </boxnext>
                             </div>
                             @endforeach

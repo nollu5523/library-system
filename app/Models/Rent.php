@@ -17,3 +17,4 @@ class Rent extends Model
     	'user_id',
     ];
 }
+

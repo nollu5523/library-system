@@ -14,7 +14,7 @@ class AuthorController extends Controller
     }
     function add(Request $request)
     {
-    	
+
     	$this->validate($request, array(
     		'name' => 'required|alphaNum|max:40',
     		'surname' => 'required|alphaNum|max:40',
@@ -49,3 +49,4 @@ class AuthorController extends Controller
     	return view('authorAdd',compact('author'))->with('info','Pomyślnie zaktualizowano autora');
     }
 }
+

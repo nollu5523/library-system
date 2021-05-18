@@ -87,8 +87,18 @@
                                         <div class="posTag">
                                             <label class="posesTag"> ISBN:    </label> <input type="text" name="isbn" class="form-control devolt"/>  <br/>
                                             <label class="posesTag"> Tytuł:    </label> <input type="text" name="title" class="form-control devolt"/>  <br/>
-                                            <label class="posesTag"> Kategoria:    </label> <input type="text" name="category_id" class="form-control devolt"/>  <br/>
-                                            <label class="posesTag"> publish ID:    </label> <input type="text" name="publishing_id" class="form-control devolt"/>  <br/>
+                                            <label class="posesTag"> Tytuł: </label>
+                                            <select class="form-control devolt cls" name="category" id="category">
+                                            @foreach($categoryList as $catList)
+                                            <option value="{{ $catList->category}}"> {{$catList->category}}</option>
+                                            @endforeach
+                                            </select>  <br/>
+                                            <label class="posesTag"> Wydawnictwo:    </label>
+                                            <select class="form-control devolt" name="publishing" id="publishing">
+                                            @foreach($publishingList as $pubList)
+                                            <option value="{{$pubList->name}}">{{$pubList->name}}</option>
+                                            @endforeach
+                                        </select>  <br/>
                                             <label class="posesTag"> Opis:    </label> <input type="text" name="description" class="form-control devolt"/>  <br/>
                                             <input type="submit" name="submit" class="btn btn-primary btn-xl-lite right-poster" value="Dodaj"/>
                                         </br>
@@ -132,8 +142,8 @@
                                                     <td>{{ $i++ }}</td>
                                                     <td>{{ $b->isbn }}</td>
                                                     <td>{{ $b->title }}</td>
-                                                    <td>{{ $b->category_id }}</td>
-                                                    <td>{{ $b->publishing_id }}</td>
+                                                    <td>{{ $b->category }}</td>
+                                                    <td>{{ $b->name }}</td>
                                                     <td> <a class="crossapp" href="{{ route('edit',['id' => $b->id]) }}"></a>
                                                     <a class="crossdel" href="{{ route('delete', ['id' => $b->id]) }}">X</a> </td>
                                                 </tr>

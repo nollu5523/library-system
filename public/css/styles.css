@@ -6732,7 +6732,7 @@ a.close.disabled {
 
 .bg-primary {
   background-image: url(../assets/img/tlobib.png);
-  background-size: auto;
+  background-size: cover;
   width: 100%;
   background-position: bottom;
   width: auto;
