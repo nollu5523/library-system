@@ -26,7 +26,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        @if(isset(Auth::user()->czy_admin))
+                        @if(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/rents') }}">Moje wypożyczenia</a></li>
+                        @elseif(isset(Auth::user()->czy_admin))
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/showRents') }}">Wypożyczenia</a></li>
                         @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
@@ -81,50 +83,37 @@
         <section class="page-section portfolio" id="register">
             <div class="container">
                 <!-- News Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Dodawanie kategorii</h2>
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Wypożyczenia</h2>
                 <!-- Icon Divider-->
                 <div class="ml-12">
                      <div class="wrapper">
                         <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                            <form method='post' action="{{('/categoryAdd')}}">
+                            <form method='post' action="">
                                 {{ csrf_field() }}
                                 <label class="posesTag"> Nazwa:    </label> <input type="text" name="category" class="form-control devolt"/>  <br/>
                                 <input type="submit" name="submit" class="btn btn-primary btn-xl-lite right-poster" value="Dodaj"/>
                                 </br>
                             </form>
 
-                                @if(!empty($info))
-                                <strong>{{ $info }}</strong>
-                                @endif
-                                @if (count($errors) > 0)
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                            @endforeach
-                                    @endif
-                                </div>
-                                </div>
-                                @if($message = Session::get('error'))
-                                            <button type ="button" data-dismiss="alert">x</button>
-                                            <strong>{{ $message }}</strong>
-                                @endif
+                               
                         </div>
                         <div class="table-responsive wraper-predit">
                             <table class="table">
                             <thead>
                                 <th>#</th>
-                                <th>nazwa</th>
-                                <th>Edycja/Usuwanie</th>
+                                <th>Imię i Nazwisko</th>
+                                <th>Tytuł</th>
+                                <th>Wypożyczono</th>
+                                <th>Do</th>
                             </thead>
                             <?{{ $i=1 }}>
-                            @foreach($category as $c)
+                            @foreach($rent as $r)
                                 <tr>
                                 <td>{{ $i++ }}</td>
-                                <td>{{ $c->category }}</td>
-                                <td>
-                                <a class="crossapp" href="{{ route('editCategory',['id' => $c->id]) }}"></a>
-                                <a class="crossdel" href="{{ route('deleteCategory', ['id' => $c->id]) }}">X</a> </td>
-                                </td>
+                                <td>{{ $r->name }} {{ $r->surname }}</td>
+                                <td>{{ $r->title}}</td>
+                                <td>{{ $r->rentDate}}</td>
+                                <td>{{ $r->returnDate}}</td>
                             </tr>
                             @endforeach
                             </table>

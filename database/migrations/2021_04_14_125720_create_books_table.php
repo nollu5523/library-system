@@ -18,10 +18,13 @@ class CreateBooksTable extends Migration
             $table->string('isbn');
             $table->string('title');
             $table->string('description');
+            $table->unsignedInteger('quantity')->nullable();
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('publishing_id');
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('publishing_id')->references('id')->on('publishings');
+            $table->date('updated_at')->nullable();
+            $table->date('created_at')->nullable();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('publishing_id')->references('id')->on('publishings')->onDelete('cascade');
         });
     }
 

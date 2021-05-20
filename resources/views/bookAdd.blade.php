@@ -26,6 +26,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
+                        @if(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/showRents') }}">Wypożyczenia</a></li>
+                        @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
                         @if(isset(Auth::user()->czy_admin))
                         <div class="dropdown">
@@ -87,7 +90,7 @@
                                         <div class="posTag">
                                             <label class="posesTag"> ISBN:    </label> <input type="text" name="isbn" class="form-control devolt"/>  <br/>
                                             <label class="posesTag"> Tytuł:    </label> <input type="text" name="title" class="form-control devolt"/>  <br/>
-                                            <label class="posesTag"> Tytuł: </label>
+                                            <label class="posesTag"> Kategoria: </label>
                                             <select class="form-control devolt cls" name="category" id="category">
                                             @foreach($categoryList as $catList)
                                             <option value="{{ $catList->category}}"> {{$catList->category}}</option>
@@ -98,7 +101,13 @@
                                             @foreach($publishingList as $pubList)
                                             <option value="{{$pubList->name}}">{{$pubList->name}}</option>
                                             @endforeach
-                                        </select>  <br/>
+                                            </select><br>
+                                            <label class="posesTag"> Autor: </label>
+                                            <select class="form-control devolt" name="author" id="author">
+                                            @foreach($authorsList as $autList)
+                                            <option value="{{$autList->id}}">{{$autList->name}} {{$autList->surname}}</option>
+                                            @endforeach
+                                            </select>  <br/>
                                             <label class="posesTag"> Opis:    </label> <input type="text" name="description" class="form-control devolt"/>  <br/>
                                             <input type="submit" name="submit" class="btn btn-primary btn-xl-lite right-poster" value="Dodaj"/>
                                         </br>
@@ -131,19 +140,21 @@
                                                 <th>#</th>
                                                 <th>ISBN</th>
                                                 <th>Tytuł</th>
-                                                <th>ID kategorii</th>
-                                                <th>ID publikacji</th>
+                                                <th>Autor</th>
+                                                <th>Kategoria</th>
+                                                <th>Wydawnictwo</th>
                                                 <th>Edycja/Usuwanie</th>
 
                                             </thead>
-                                            <?{{ $i=1 }}>
+                                            <?{{ $i=1 }}?>
                                             @foreach($book as $b)
                                                 <tr>
                                                     <td>{{ $i++ }}</td>
                                                     <td>{{ $b->isbn }}</td>
                                                     <td>{{ $b->title }}</td>
+                                                    <td>{{ $b->name}} {{ $b->surname }}</td>
                                                     <td>{{ $b->category }}</td>
-                                                    <td>{{ $b->name }}</td>
+                                                    <td>{{ $b->publishing }}</td>
                                                     <td> <a class="crossapp" href="{{ route('edit',['id' => $b->id]) }}"></a>
                                                     <a class="crossdel" href="{{ route('delete', ['id' => $b->id]) }}">X</a> </td>
                                                 </tr>

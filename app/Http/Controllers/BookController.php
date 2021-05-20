@@ -6,31 +6,36 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Publishing;
+use App\Models\Author;
+use App\Models\AuthorBook;
 use DB;
 
 class BookController extends Controller
 {
 	function index()
     {
-        $book = DB::table('books')->select('title','isbn','books.id','description','category','name')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->get();
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
 
         $categoryList = Category::select('id','category')->get();
         $publishingList = Publishing::select('id','name')->get();
+        $authorsList = Author::select('id','name','surname')->get();
 
-        return view('bookAdd',compact('book','categoryList','publishingList'));
+        return view('bookAdd',compact('book','categoryList','publishingList','authorsList'));
     }
+
     function add(Request $request)
     {
         $categoryList = Category::select('id','category')->get();
         $publishingList = Publishing::select('id','name')->get();
+        $authorsList = Author::select('id','name','surname')->get();
         $category_id = DB::table('categories')->select('id')->where('category',$request->category)->value('id');
         $publishing_id = DB::table('publishings')->select('id')->where('name',$request->publishing)->value('id');
+        $author_id = DB::table('authors')->select('id')->where('id',$request->author)->value('id');
 
         $this->validate($request, array(
             'isbn' => 'required|max:40',
             'title' => 'required|max:100',
             'description' => 'required|max:1000',
-
         ));
 
         Book::create(array(
@@ -40,39 +45,88 @@ class BookController extends Controller
             'category_id' => $category_id,
             'publishing_id' => $publishing_id,
         ));
-        $book = Book::all();
 
-        return view('bookAdd',compact('book','categoryList','publishingList'))->with('info','Pomyślnie dodano książkę');
+        $book_id = DB::table('books')->select('id')->orderBy('id','desc')->value('id');
+        
+        AuthorBook::create(array(
+            'author_id' => $author_id,
+            'book_id' => $book_id,
+        ));
+
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
+
+        return view('bookAdd',compact('book','categoryList','publishingList','authorsList'))->with('info','Pomyślnie dodano książkę');
     }
+
     public function delete($id)
     {
         $categoryList = Category::select('id','category')->get();
         $publishingList = Publishing::select('id','name')->get();
+        $authorsList = Author::select('id','name','surname')->get();
         $delete = Book::where('id',$id);
         $delete->delete();
-        $book = Book::all();
-        return view('bookAdd',compact('book','categoryList','publishingList'))->with('info','Pomyślnie usunięto książkę');
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
+        return view('bookAdd',compact('book','categoryList','publishingList','authorsList'))->with('info','Pomyślnie usunięto książkę');
     }
+
     public function edit($id)
     {
+        $categoryList = Category::select('id','category')->get();
+        $publishingList = Publishing::select('id','name')->get();
+        $authorsList = Author::select('id','name','surname')->get();
         $edit = Book::where('id',$id)->first();
-        return view('edit')->with('edit', $edit);
+        $category = Category::where('id',$edit->category_id)->first();
+        $publishing = Publishing::where('id',$edit->publishing_id)->first();
+
+        $author = DB::table('authors')->select('id','name','surname')->join('authors_books','authors_books.author_id','=','authors.id')->where('book_id',$edit->id)->first();
+
+
+        return view('edit',compact('edit','publishing','category','author','categoryList','publishingList','authorsList'));
     }
+    
     public function update(Request $request)
     {
         $categoryList = Category::select('id','category')->get();
         $publishingList = Publishing::select('id','name')->get();
-        $save = Book::where('id',$request->id)->first();
-        $save->isbn = $request->isbn;
-        $save->title = $request->title;
-        $save->description = $request->description;
-        $save->category_id = $request->category_id;
-        $save->publishing_id = $request->publishing_id;
-        $save->save();
+        $authorsList = Author::select('id','name','surname')->get();
 
-        $book = Book::all();
+        $category_id = DB::table('categories')->select('id')->where('id',$request->category)->value('id');
+        $publishing_id = DB::table('publishings')->select('id')->where('id',$request->publishing)->value('id');
+        $author_id = DB::table('authors')->select('id')->where('id',$request->author)->value('id');
+        $book_id = DB::table('books')->select('id')->where('id',$request->id)->value('id');
+        
+        $saveBook = Book::where('id',$request->id)->first();
+        $saveBook->isbn = $request->isbn;
+        $saveBook->title = $request->title;
+        $saveBook->description = $request->description;
+        $saveBook->category_id = $category_id;
+        $saveBook->publishing_id = $publishing_id;
+        $saveBook->save();
 
-        return view('bookAdd',compact('book','categoryList','publishingList'))->with('info','Pomyślnie zaktualizowano książkę');
+        $BookAuthor = DB::table('authors_books')->select('author_id','book_id')->where('author_id',$author_id)->where('book_id',$book_id)->get();
+        
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
+        
+        if($BookAuthor==null)
+        {
+                
+            return view('bookAdd',compact('book','categoryList','publishingList','authorsList'))->with('info','Pomyślnie zaktualizowano książkę');
+        }
+        else
+        {
+            $delete = AuthorBook::where('book_id',$book_id);
+            $delete->delete();
+            AuthorBook::create(array(
+                'author_id' => $author_id,
+                'book_id' => $book_id,));
+
+            $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
+            
+            return view('bookAdd',compact('book','categoryList','publishingList','authorsList'))->with('info','Pomyślnie zaktualizowano książkę');
+        }
+        
+
+        
     }
 
     function details($title)

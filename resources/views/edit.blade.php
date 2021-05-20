@@ -86,8 +86,36 @@
                                         <label class="posesTag"> isbn:    </label> <input type="text" name="isbn" value="{{ $edit->isbn }}" class="form-control devolt"/>  <br/>
                                         <label class="posesTag"> title:    </label> <input type="text" name="title" value="{{ $edit->title }}" class="form-control devolt"/>  <br/>
                                         <label class="posesTag"> opis:    </label> <input type="text" name="description" value="{{ $edit->description }}" class="form-control devolt"/>  <br/>
-                                        <label class="posesTag"> kategoria:    </label> <input type="text" name="category_id" value="{{ $edit->category_id }}" class="form-control devolt"/>  <br/>
-                                        <label class="posesTag"> publish id:    </label> <input type="text" name="publishing_id" value="{{ $edit->publishing_id }}" class="form-control devolt"/>  <br/>
+                                        <label class="posesTag"> Kategoria: </label>
+                                        <select class="form-control devolt cls" name="category" id="category">
+                                            @foreach($categoryList as $catList)
+                                            @if($category->id == $catList->id)
+                                            <option value="{{ $catList->id}}" selected=""> {{$catList->category}}</option>
+                                            @else
+                                            <option value="{{ $catList->id}}"> {{$catList->category}}</option>
+                                            @endif
+                                            @endforeach
+                                            </select>  <br/>
+                                            <label class="posesTag"> Wydawnictwo:    </label>
+                                            <select class="form-control devolt" name="publishing" id="publishing">
+                                            @foreach($publishingList as $pubList)
+                                            @if($publishing->id == $pubList->id)
+                                            <option value="{{$pubList->id}}" selected="">{{$pubList->name}}</option>
+                                            @else
+                                            <option value="{{$pubList->id}}" >{{$pubList->name}}</option>
+                                            @endif
+                                            @endforeach
+                                            </select><br>
+                                            <label class="posesTag"> Autor: </label>
+                                            <select class="form-control devolt" name="author" id="author">
+                                            @foreach($authorsList as $autList)
+                                            @if($author->id == $autList->id)
+                                            <option value="{{$autList->id}}" selected="">{{$autList->name}} {{$autList->surname}}</option>
+                                            @else
+                                            <option value="{{$autList->id}}">{{$autList->name}} {{$autList->surname}}</option>
+                                            @endif
+                                            @endforeach
+                                            </select>  <br/>
                                     </br>
                                     <input type="submit" name="edycja" class="btn btn-primary btn-xl-lite" value="zapisz"/>
                                     <a class="btn btn-primary btn-xl-lite" href="{{ url('/bookAdd') }}"> Cofnij </a>

@@ -118,7 +118,17 @@ Route::post('/updatePublishing', [
 'as' => 'updatePublishing'
 ]);
 
-
+//Rent routes
+Route::get('/rents','App\Http\Controllers\RentController@index');
+Route::get('/rent/{id}',[
+'uses' => 'App\Http\Controllers\RentController@rent',
+'as' => 'rent'
+]);
+Route::get('/showRents','App\Http\Controllers\RentController@showRents');
+Route::get('/rent/{id}',[
+'uses' => 'App\Http\Controllers\RentController@showRent',
+'as' => 'showRent'
+]);
 
 
 

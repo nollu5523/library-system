@@ -26,6 +26,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
+                        @if(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/rents') }}">Moje wypożyczenia</a></li>
+                        @elseif(isset(Auth::user()->czy_admin))
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/showRents') }}">Wypożyczenia</a></li>
+                        @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
                         @if(isset(Auth::user()->czy_admin))
                         <div class="dropdown">
@@ -90,7 +95,6 @@
                         @foreach($category as $c)
                                 <label><a href="{{ route('categoryFilter',['id'=>$c->id]) }}">{{$c->category}}</a><br></label>
                             @endforeach
-                            <button type="submit" class="btn btn-primary btn-xl-lite right-filter" >Filtruj</button>
                         </form>
                     </div>
 
@@ -101,6 +105,9 @@
                                 <input type="text" name="bookTitle" class="form-control textsrc" placeholder="Wpisz szukaną frazę">
                                 <div style="float: right;"><button type="submit" class="btn btn-primary btn-xl-lite">Szukaj</button></div>
                             </form>
+                            @if(Session::has('info'))
+                                <strong>{{ Session::get('info')}}</strong>
+                                @endif
                         </div>
 
                         <div class="la-g5">
@@ -121,8 +128,10 @@
                                     <div class="preisbnnext"> ISBN: {{$b->isbn}} </div></br>
                                     <div class="rgth" ><h3>Opis: </h3></div>
                                     <div class="predescriptionnext">{{$b->description}} </div></br>
-                                    @if(isset(Auth::user()->email))
-                                    <div class="btnext" ><button type="submit" class="btn btn-primary btn-xl-lite reserv">Wypożycz</button></div>
+                                    @if(isset(Auth::user()->email) && !isset(Auth::user()->czy_admin))
+                                    <div class="btnext" ><a href=" {{ route('rent',['id' => $b->bid]) }}" ><button class="btn btn-primary btn-xl-lite reserv">Wypożycz</button></a></div>
+                                    @elseif(isset(Auth::user()->czy_admin))
+                                    <div class="btnext" ><a href=" {{ route('showRent',['id' => $b->bid]) }}" ><button class="btn btn-primary btn-xl-lite reserv">Zobacz kto wypożycza</button></a></div>
                                     @endif
                                 </boxnext>
                             </div>

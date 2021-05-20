@@ -17,6 +17,8 @@ class Authors extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('surname');
+            $table->date('updated_at')->nullable();
+            $table->date('created_at')->nullable();
         });
     }
 

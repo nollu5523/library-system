@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class AuthorBook extends Model
 {
     use HasFactory;
-
-    protected $hidden=[
+    protected $table='authors_books';
+    protected $fillable=[
     	'author_id',
     	'book_id',
     ];

@@ -19,7 +19,7 @@ class SearchEngine extends Controller
 
     function allBooksWithCategories()
     {
-    	$book = Book::all();
+    	$book = DB::table('books')->select('books.id as bid','books.title','books.description','books.isbn','authors.name','authors.id','authors.surname')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->orderBy('books.title','asc')->get();
         $category = Category::all();
         $author = Author::all();
     	return view('book', compact('book','category','author'));
@@ -28,9 +28,9 @@ class SearchEngine extends Controller
     function findBook()
     {
     	$category = Category::all();
-        $book = DB::table('books')->select('books.id','books.title','books.description','books.isbn','authors.name','authors.id','authors.surname')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->where( function ($query) {
+        $book = DB::table('books')->select('books.id as bid','books.title','books.description','books.isbn','authors.name','authors.id','authors.surname')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->where( function ($query) {
             $query->where('title','like','%' . request('bookTitle') . '%')->groupBy('authors_books','id');
-    })->get();
+    })->orderBy('books.title','asc')->get();
         $author = DB::table('authors')->where('name', 'like' , '%' . request('bookTitle') . '%')->orWhere('surname','like','%' . request('bookTitle') . '%')->get();
         return view('book', compact('book','category','author'));
     }
@@ -41,7 +41,7 @@ class SearchEngine extends Controller
        // $requestCategory = $request->input('category');
         $category = Category::all();
 
-        $book = DB::table('books')->select('books.id','books.title','books.description','books.isbn','authors.name','authors.id','authors.surname')->join('categories','categories.id','=','books.category_id')->where('categories.id','=', $id)->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->get();
+        $book = DB::table('books')->select('books.id as bid','books.title','books.description','books.isbn','authors.name','authors.id','authors.surname')->join('categories','categories.id','=','books.category_id')->where('categories.id','=', $id)->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->orderBy('books.title','asc')->get();
 
         $author = DB::table('authors')->select('authors.name','authors.surname','authors.id')->join('authors_books', 'authors_books.author_id','=','authors.id')->join('books','books.id','=','authors_books.book_id')->join('categories','categories.id','=','books.category_id')->where('categories.id','=', $id)->get();
 
