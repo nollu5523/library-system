@@ -26,14 +26,12 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        @if(isset(Auth::user()->czy_admin))
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/showRents') }}">Wypożyczenia</a></li>
-                        @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/book') }}">Książki</a></li>
                         @if(isset(Auth::user()->czy_admin))
                         <div class="dropdown">
                             <a class="dra" href="#">Interfejs admina</a>
                             <ul>
+                                <li><a class="dra" href="{{ url('/showRents') }}">Wypożyczenia</a></li>
                                 <li><a class="dra" href="{{ url('/bookAdd') }}">Książki</a></li>
                                 <li><a class="dra" href="{{ url('/categoryAdd') }}">Kategorie</a></li>
                                 <li><a class="dra" href="{{ url('/authorAdd') }}">Autorzy</a></li>
@@ -81,7 +79,7 @@
         <section class="page-section portfolio" id="register">
             <div class="container">
                 <!-- News Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Dodaj wydawnictwo</h2>
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Dodawanie wydawnictwa</h2>
                 <!-- Icon Divider-->
                 <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">

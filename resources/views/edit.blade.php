@@ -31,6 +31,7 @@
                         <div class="dropdown">
                             <a class="dra" href="#">Interfejs admina</a>
                             <ul>
+                                <li><a class="dra" href="{{ url('/showRents') }}">Wypożyczenia</a></li>
                                 <li><a class="dra" href="{{ url('/bookAdd') }}">Książki</a></li>
                                 <li><a class="dra" href="{{ url('/categoryAdd') }}">Kategorie</a></li>
                                 <li><a class="dra" href="{{ url('/authorAdd') }}">Autorzy</a></li>
@@ -89,7 +90,7 @@
                                         <label class="posesTag"> Kategoria: </label>
                                         <select class="form-control devolt cls" name="category" id="category">
                                             @foreach($categoryList as $catList)
-                                            @if($category->id == $catList->id)
+                                            @if(isset($category->id) && $category->id == $catList->id)
                                             <option value="{{ $catList->id}}" selected=""> {{$catList->category}}</option>
                                             @else
                                             <option value="{{ $catList->id}}"> {{$catList->category}}</option>
@@ -99,7 +100,7 @@
                                             <label class="posesTag"> Wydawnictwo:    </label>
                                             <select class="form-control devolt" name="publishing" id="publishing">
                                             @foreach($publishingList as $pubList)
-                                            @if($publishing->id == $pubList->id)
+                                            @if(isset($publishing->id) && $publishing->id == $pubList->id)
                                             <option value="{{$pubList->id}}" selected="">{{$pubList->name}}</option>
                                             @else
                                             <option value="{{$pubList->id}}" >{{$pubList->name}}</option>
@@ -109,7 +110,7 @@
                                             <label class="posesTag"> Autor: </label>
                                             <select class="form-control devolt" name="author" id="author">
                                             @foreach($authorsList as $autList)
-                                            @if($author->id == $autList->id)
+                                            @if(isset($author->id) && $author->id == $autList->id)
                                             <option value="{{$autList->id}}" selected="">{{$autList->name}} {{$autList->surname}}</option>
                                             @else
                                             <option value="{{$autList->id}}">{{$autList->name}} {{$autList->surname}}</option>

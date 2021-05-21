@@ -19,7 +19,7 @@ class SearchEngine extends Controller
 
     function allBooksWithCategories()
     {
-    	$book = DB::table('books')->select('books.id as bid','books.title','books.description','books.isbn','authors.name','authors.id','authors.surname')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors.id','=','authors_books.author_id')->orderBy('books.title','asc')->get();
+    	$book = DB::table('books')->select('books.id as bid','books.title','books.description','books.isbn','authors.name','authors.id','authors.surname')->leftjoin('authors_books','authors_books.book_id','=','books.id')->leftjoin('authors','authors.id','=','authors_books.author_id')->orderBy('books.title','asc')->get();
         $category = Category::all();
         $author = Author::all();
     	return view('book', compact('book','category','author'));

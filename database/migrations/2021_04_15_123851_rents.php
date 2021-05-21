@@ -16,14 +16,14 @@ class Rents extends Migration
         Schema::create('rents', function (Blueprint $table)
         {
             $table->increments('id');
-            $table->premiumDate('rent_date');
-            $table->premiumDate('return_date');
-            $table->unsignedInteger('book_id');
-            $table->unsignedInteger('user_id');
+            $table->date('rent_date');
+            $table->date('return_date');
+            $table->unsignedInteger('book_id')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
             $table->date('updated_at')->nullable();
             $table->date('created_at')->nullable();
-            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

@@ -125,7 +125,7 @@ Route::get('/rent/{id}',[
 'as' => 'rent'
 ]);
 Route::get('/showRents','App\Http\Controllers\RentController@showRents');
-Route::get('/rent/{id}',[
+Route::get('/showRent/{id}',[
 'uses' => 'App\Http\Controllers\RentController@showRent',
 'as' => 'showRent'
 ]);

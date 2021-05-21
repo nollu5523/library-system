@@ -14,7 +14,7 @@ class BookController extends Controller
 {
 	function index()
     {
-        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->leftjoin('categories','categories.id','=','books.category_id')->leftjoin('publishings','publishings.id','=','books.publishing_id')->leftjoin('authors_books','authors_books.book_id','=','books.id')->leftjoin('authors','authors_books.author_id','=','authors.id')->get();
 
         $categoryList = Category::select('id','category')->get();
         $publishingList = Publishing::select('id','name')->get();
@@ -78,7 +78,7 @@ class BookController extends Controller
         $category = Category::where('id',$edit->category_id)->first();
         $publishing = Publishing::where('id',$edit->publishing_id)->first();
 
-        $author = DB::table('authors')->select('id','name','surname')->join('authors_books','authors_books.author_id','=','authors.id')->where('book_id',$edit->id)->first();
+        $author = DB::table('authors')->select('id','name','surname')->leftjoin('authors_books','authors_books.author_id','=','authors.id')->where('book_id',$edit->id)->first();
 
 
         return view('edit',compact('edit','publishing','category','author','categoryList','publishingList','authorsList'));
