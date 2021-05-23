@@ -130,6 +130,11 @@ Route::get('/showRent/{id}',[
 'as' => 'showRent'
 ]);
 
+Route::get('/deleteRent/{id}/{book_id}', [
+'uses' => 'App\Http\Controllers\RentController@deleteRent',
+'as' => 'deleteRent'
+]);
+
 
 
 

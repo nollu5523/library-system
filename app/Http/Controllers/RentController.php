@@ -61,7 +61,7 @@ class RentController extends Controller
 
     function showRents()
     {
-    	$rent = DB::table('rents')->select('users.name','users.surname','books.title','rents.rent_date as rentDate', 'rents.return_date as returnDate')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->get();
+    	$rent = DB::table('rents')->select('rents.book_id','rents.id','users.name','users.surname','books.title','rents.rent_date as rentDate', 'rents.return_date as returnDate')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->get();
     	return view('rents',compact('rent'));
     }
 
@@ -70,5 +70,13 @@ class RentController extends Controller
     	$rent = DB::table('rents')->select('users.name','users.surname','books.title','rents.rent_date as rentDate', 'rents.return_date as returnDate')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('rents.book_id','=',$id)->get();
     	return view('rents',compact('rent'));
     }
+
+	function deleteRent($id,$book_id)
+	{
+		$delete = Rent::where('id',$id);
+        $delete->delete();	
+		DB::table('books')->where('id', $book_id)->update(['quantity' => DB::raw('quantity + 1')]);	
+		return redirect()->back()->with('info','Książka została zwrócona');
+	}
 
 }

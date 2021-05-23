@@ -104,6 +104,9 @@
                                 <th>Tytuł</th>
                                 <th>Wypożyczono</th>
                                 <th>Do</th>
+                                @if(Auth::user()->czy_admin==1)
+                                <th>Zwrot</th>
+                                @endif
                             </thead>
                             <?{{ $i=1 }}>
                             @foreach($rent as $r)
@@ -113,6 +116,9 @@
                                 <td>{{ $r->title}}</td>
                                 <td>{{ $r->rentDate}}</td>
                                 <td>{{ $r->returnDate}}</td>
+                                @if(Auth::user()->czy_admin==1)
+                                <td> <a class="crossapp" href="{{ route('deleteRent',['id' => $r->id , 'book_id' => $r->book_id ]) }}"></a></td>
+                                @endif
                             </tr>
                             @endforeach
                             </table>
