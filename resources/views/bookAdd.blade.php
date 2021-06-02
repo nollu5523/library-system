@@ -101,11 +101,12 @@
                                             @endforeach
                                             </select><br>
                                             <label class="posesTag"> Autor: </label>
-                                            <select class="form-control devolt" name="author" id="author">
+                                            <select class="form-control devolt" name="author[]" id="author" multiple="multiple">
                                             @foreach($authorsList as $autList)
                                             <option value="{{$autList->id}}">{{$autList->name}} {{$autList->surname}}</option>
                                             @endforeach
                                             </select>  <br/>
+                                            <label class="posesTag"> Ilość:    </label> <input type="number" name="quantity" class="form-control devolt"/>  <br/>
                                             <label class="posesTag"> Opis:    </label> <input type="text" name="description" class="form-control devolt"/>  <br/>
                                             <input type="submit" name="submit" class="btn btn-primary btn-xl-lite right-poster" value="Dodaj"/>
                                         </br>
@@ -141,6 +142,7 @@
                                                 <th>Autor</th>
                                                 <th>Kategoria</th>
                                                 <th>Wydawnictwo</th>
+                                                <th>Ilość</th>
                                                 <th>Edycja/Usuwanie</th>
 
                                             </thead>
@@ -150,9 +152,10 @@
                                                     <td>{{ $i++ }}</td>
                                                     <td>{{ $b->isbn }}</td>
                                                     <td>{{ $b->title }}</td>
-                                                    <td>{{ $b->name}} {{ $b->surname }}</td>
+                                                    <td>{{ $b->name}}</td>
                                                     <td>{{ $b->category }}</td>
                                                     <td>{{ $b->publishing }}</td>
+                                                    <td>{{ $b->quantity }}</td>
                                                     <td> <a class="crossapp" href="{{ route('edit',['id' => $b->id]) }}"></a>
                                                     <a class="crossdel" href="{{ route('delete', ['id' => $b->id]) }}">X</a> </td>
                                                 </tr>

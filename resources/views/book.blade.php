@@ -117,13 +117,13 @@
                                     <div class="imgtree"></div>
                                     <div class="pretitle"> <h3>{{$b->title}} </h3> </div>
                                     <div class="predescription">{{$b->description}} </div>
-                                    <div class="preauthor">Autor: {{$b->name}} {{$b->surname}} </div>
+                                    <div class="preauthor">Autor: {{$b->name}} </div>
                                 </boxprev>
 
                                 <boxnext >
                                     <div class="imgtree"></div>
                                     <div class="pretitle"> <h3>Tytuł: {{$b->title}} </h3> </div> </br>
-                                    <div class="preauthornext">Autor: {{$b->name}} {{$b->surname}} </div>
+                                    <div class="preauthornext">Autor: {{$b->name}} </div>
                                     <div class="preisbnnext"> ISBN: {{$b->isbn}} </div></br>
                                     <div class="rgth" ><h3>Opis: </h3></div>
                                     <div class="predescriptionnext">{{$b->description}} </div></br>

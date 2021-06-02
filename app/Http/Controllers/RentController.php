@@ -18,7 +18,7 @@ class RentController extends Controller
     function index()
     {
     	$user_id = Auth::user()->id;
-    	$rent = DB::table('rents')->select('users.name','users.surname','books.title','rents.rent_date as rentDate', 'rents.return_date as returnDate')->join('books','books.id','=','rents.book_id')->join('users','rents.user_id','=','users.id')->where('rents.user_id','=',$user_id)->get();
+    	$rent = DB::table('rents')->select('users.name','users.surname','books.title','books.id','rents.booking as booking', 'rents.booking_end as bookingEnd','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('books','books.id','=','rents.book_id')->join('users','rents.user_id','=','users.id')->where('rents.user_id','=',$user_id)->get();
     	return view('rents',compact('rent'));
     }
 
@@ -26,7 +26,6 @@ class RentController extends Controller
     {
     	$book_id = DB::table('books')->select('id',)->where('books.id',$id)->value('id');
     	$user_id = Auth::user()->id;
-    	$bookQuantity = DB::table('books')->select('quantity')->where('id',$book_id)->value('quantity');
     	$rentDate = Carbon::now();
     	$returnDate = Carbon::now()->addDays(7);
     	$existRent = Rent::where('user_id',$user_id)->where('book_id',$book_id)->first();
@@ -40,7 +39,7 @@ class RentController extends Controller
     		}
     		else
     		{
-    		$book->quantity = $bookQuantity-1;
+    		$book->quantity = $book->quantity-1;
     		$book->save();
 
     		Rent::create(array(
@@ -55,28 +54,60 @@ class RentController extends Controller
     		return redirect()->back()->with('info','nie możesz kilkukrotnie wypożyczyć jednej książki');
     	}
     	
-    	$rent = DB::table('rents')->select('users.name','users.surname','books.title','rents.rent_date as rentDate', 'rents.return_date as returnDate')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('rents.user_id','=',$user_id)->get();
+    	$rent = DB::table('rents')->select('users.name','users.surname','books.title','books.id','rents.booking as booking', 'rents.booking_end as bookingEnd','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('rents.user_id','=',$user_id)->get();
     	return view('rents',compact('rent'));
     }
 
     function showRents()
     {
-    	$rent = DB::table('rents')->select('rents.book_id','rents.id','users.name','users.surname','books.title','rents.rent_date as rentDate', 'rents.return_date as returnDate')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->get();
+    	$rent = DB::table('rents')->select('rents.id','users.name','users.surname','books.id','books.title','rents.booking as booking', 'rents.booking_end as bookingEnd','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->orderBy('rents.id','asc')->get();
     	return view('rents',compact('rent'));
     }
 
     function showRent($id)
     {
-    	$rent = DB::table('rents')->select('users.name','users.surname','books.title','rents.rent_date as rentDate', 'rents.return_date as returnDate')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('rents.book_id','=',$id)->get();
+    	$rent = DB::table('rents')->select('users.name','users.surname','books.id','books.title','rents.booking as booking', 'rents.booking_end as bookingEnd','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('rents.book_id','=',$id)->get();
     	return view('rents',compact('rent'));
     }
 
-	function deleteRent($id,$book_id)
-	{
-		$delete = Rent::where('id',$id);
-        $delete->delete();	
-		DB::table('books')->where('id', $book_id)->update(['quantity' => DB::raw('quantity + 1')]);	
-		return redirect()->back()->with('info','Książka została zwrócona');
-	}
 
+    function return($id)
+    {
+    	$returnedRent = Rent::where('book_id',$id)->first();
+    	$book = Book::where('id',$id)->first();
+    	$book->quantity = $book->quantity+1;
+    	$book->save();
+    	$returnedRent->delete();
+    	if(Auth::user()->czy_admin)
+    	{
+    		$rent = DB::table('rents')->select('users.name','users.surname','books.id','books.title','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->get();
+    	}
+    	else
+    	{
+    		$rent = DB::table('rents')->select('users.name','users.surname','books.id','books.title','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('rents.user_id','=',Auth::user()->id)->get();
+    	}
+    	return view('rents',compact('rent'));
+    }
+    function showBooked()
+    {
+    	$rent = DB::table('rents')->select('rents.id','users.name','users.surname','books.id','books.title','rents.booking as booking', 'rents.booking_end as bookingEnd','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('booking', '!=', null)->where('booking_end', '<=', Carbon::now())->orderBy('rents.id','asc')->get();
+    	return view('rents',compact('rent'));
+    }
+    function showRented()
+    {
+    	$rent = DB::table('rents')->select('rents.id','users.name','users.surname','books.id','books.title','rents.booking as booking', 'rents.booking_end as bookingEnd','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('returned','=',null)->orderBy('rents.id','asc')->get();
+    	return view('rents',compact('rent'));
+    }
+    function showReturned()
+    {
+    	$rent = DB::table('rents')->select('rents.id','users.name','users.surname','books.id','books.title','rents.booking as booking', 'rents.booking_end as bookingEnd','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('returned','!=',null)->orderBy('rents.id','asc')->get();
+    	return view('rents',compact('rent'));
+    }
+    function findPerson()
+    {
+    	$surname = request('surname');
+    	$rent = DB::table('rents')->select('rents.id','users.name','users.surname','books.id','books.title','rents.booking as booking', 'rents.booking_end as bookingEnd','rents.rent_date as rentDate', 'rents.return_date as returnDate','rents.returned')->join('users','rents.user_id','=','users.id')->join('books','books.id','=','rents.book_id')->where('surname','like', '%' . $surname . '%')->orderBy('rents.id','asc')->get();
+    	
+    	return view('rents',compact('rent'));
+    }
 }

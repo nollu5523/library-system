@@ -16,10 +16,10 @@ class CreateAuthorBookTable extends Migration
         Schema::create('authors_books', function (Blueprint $table) {
             $table->unsignedInteger('author_id')->nullable();
             $table->unsignedInteger('book_id')->nullable();
-            $table->date('updated_at')->nullable();
-            $table->date('created_at')->nullable();
-            $table->foreign('author_id')->references('id')->on('authors')->onDelete('set null');
-            $table->foreign('book_id')->references('id')->on('books')->onDelete('set null');
+            $table->datetime('updated_at')->nullable();
+            $table->datetime('created_at')->nullable();
+            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
         });
     }
 

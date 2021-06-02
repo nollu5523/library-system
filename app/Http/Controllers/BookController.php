@@ -14,12 +14,11 @@ class BookController extends Controller
 {
 	function index()
     {
-        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->leftjoin('categories','categories.id','=','books.category_id')->leftjoin('publishings','publishings.id','=','books.publishing_id')->leftjoin('authors_books','authors_books.book_id','=','books.id')->leftjoin('authors','authors_books.author_id','=','authors.id')->get();
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','quantity','publishings.name AS publishing',DB::raw("GROUP_CONCAT(authors.name, authors.surname SEPARATOR ', ') AS name"))->leftjoin('categories','categories.id','=','books.category_id')->leftjoin('publishings','publishings.id','=','books.publishing_id')->leftjoin('authors_books','authors_books.book_id','=','books.id')->leftjoin('authors','authors_books.author_id','=','authors.id')->orderBy('title','asc')->groupBy('title','isbn','books.id','description','category','quantity','publishing')->get();
 
         $categoryList = Category::select('id','category')->get();
         $publishingList = Publishing::select('id','name')->get();
         $authorsList = Author::select('id','name','surname')->get();
-
         return view('bookAdd',compact('book','categoryList','publishingList','authorsList'));
     }
 
@@ -32,10 +31,15 @@ class BookController extends Controller
         $publishing_id = DB::table('publishings')->select('id')->where('name',$request->publishing)->value('id');
         $author_id = DB::table('authors')->select('id')->where('id',$request->author)->value('id');
 
+        $author = $request->input('author');
+        
+        
+       
         $this->validate($request, array(
             'isbn' => 'required|max:40',
             'title' => 'required|max:100',
             'description' => 'required|max:1000',
+            'quantity' => 'required|numeric',
         ));
 
         Book::create(array(
@@ -44,16 +48,21 @@ class BookController extends Controller
             'description' => $request->input('description'),
             'category_id' => $category_id,
             'publishing_id' => $publishing_id,
+            'quantity' => $request->input('quantity'),
         ));
 
         $book_id = DB::table('books')->select('id')->orderBy('id','desc')->value('id');
         
-        AuthorBook::create(array(
-            'author_id' => $author_id,
+        for($i=0;$i<count($author); $i++)
+        {
+            AuthorBook::create(array(
+            'author_id' => $author[$i],
             'book_id' => $book_id,
         ));
 
-        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
+        }
+        
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','quantity','publishings.name AS publishing',DB::raw("GROUP_CONCAT(authors.name, authors.surname SEPARATOR ', ') AS name"))->leftjoin('categories','categories.id','=','books.category_id')->leftjoin('publishings','publishings.id','=','books.publishing_id')->leftjoin('authors_books','authors_books.book_id','=','books.id')->leftjoin('authors','authors_books.author_id','=','authors.id')->orderBy('title','asc')->groupBy('title','isbn','books.id','description','category','quantity','publishing')->get();
 
         return view('bookAdd',compact('book','categoryList','publishingList','authorsList'))->with('info','Pomyślnie dodano książkę');
     }
@@ -65,7 +74,7 @@ class BookController extends Controller
         $authorsList = Author::select('id','name','surname')->get();
         $delete = Book::where('id',$id);
         $delete->delete();
-        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','quantity','publishings.name AS publishing',DB::raw("GROUP_CONCAT(authors.name, authors.surname SEPARATOR ', ') AS name"))->leftjoin('categories','categories.id','=','books.category_id')->leftjoin('publishings','publishings.id','=','books.publishing_id')->leftjoin('authors_books','authors_books.book_id','=','books.id')->leftjoin('authors','authors_books.author_id','=','authors.id')->orderBy('title','asc')->groupBy('title','isbn','books.id','description','category','quantity','publishing')->get();
         return view('bookAdd',compact('book','categoryList','publishingList','authorsList'))->with('info','Pomyślnie usunięto książkę');
     }
 
@@ -94,33 +103,40 @@ class BookController extends Controller
         $publishing_id = DB::table('publishings')->select('id')->where('id',$request->publishing)->value('id');
         $author_id = DB::table('authors')->select('id')->where('id',$request->author)->value('id');
         $book_id = DB::table('books')->select('id')->where('id',$request->id)->value('id');
-        
+        $author = $request->input('author');
         $saveBook = Book::where('id',$request->id)->first();
         $saveBook->isbn = $request->isbn;
         $saveBook->title = $request->title;
         $saveBook->description = $request->description;
+        $saveBook->quantity = $request->quantity;
         $saveBook->category_id = $category_id;
         $saveBook->publishing_id = $publishing_id;
         $saveBook->save();
 
+
+        
+        
         $BookAuthor = DB::table('authors_books')->select('author_id','book_id')->where('author_id',$author_id)->where('book_id',$book_id)->get();
         
-        $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
+        
         
         if($BookAuthor==null)
         {
-                
+                $book = DB::table('books')->select('title','isbn','books.id','description','category','quantity','publishings.name AS publishing',DB::raw("GROUP_CONCAT(authors.name, authors.surname SEPARATOR ', ') AS name"))->leftjoin('categories','categories.id','=','books.category_id')->leftjoin('publishings','publishings.id','=','books.publishing_id')->leftjoin('authors_books','authors_books.book_id','=','books.id')->leftjoin('authors','authors_books.author_id','=','authors.id')->orderBy('title','asc')->groupBy('title','isbn','books.id','description','category','quantity','publishing')->get();
             return view('bookAdd',compact('book','categoryList','publishingList','authorsList'))->with('info','Pomyślnie zaktualizowano książkę');
         }
         else
         {
             $delete = AuthorBook::where('book_id',$book_id);
             $delete->delete();
+            for($i=0;$i<count($author); $i++)
+            {
             AuthorBook::create(array(
-                'author_id' => $author_id,
-                'book_id' => $book_id,));
-
-            $book = DB::table('books')->select('title','isbn','books.id','description','category','publishings.name AS publishing','authors.name','authors.surname')->join('categories','categories.id','=','books.category_id')->join('publishings','publishings.id','=','books.publishing_id')->join('authors_books','authors_books.book_id','=','books.id')->join('authors','authors_books.author_id','=','authors.id')->get();
+            'author_id' => $author[$i],
+            'book_id' => $book_id,
+            ));
+            }
+            $book = DB::table('books')->select('title','isbn','books.id','description','category','quantity','publishings.name AS publishing',DB::raw("GROUP_CONCAT(authors.name, authors.surname SEPARATOR ', ') AS name"))->leftjoin('categories','categories.id','=','books.category_id')->leftjoin('publishings','publishings.id','=','books.publishing_id')->leftjoin('authors_books','authors_books.book_id','=','books.id')->leftjoin('authors','authors_books.author_id','=','authors.id')->orderBy('title','asc')->groupBy('title','isbn','books.id','description','category','quantity','publishing')->get();
             
             return view('bookAdd',compact('book','categoryList','publishingList','authorsList'))->with('info','Pomyślnie zaktualizowano książkę');
         }
@@ -131,7 +147,7 @@ class BookController extends Controller
 
     function details($title)
     {
-        $book = DB::table('books')->select('title','isbn','authors.name','authors.surname','categories.category','description')->join('authors_books','authors_books.book_id','=','books.id')->join('categories','categories.id','=','books.category_id')->join('authors','authors.id','=','authors_books.author_id')->where('title','like',$title)->get();
+        $book = DB::table('books')->select('title','isbn','books.id','description','category','quantity','publishings.name AS publishing',DB::raw("GROUP_CONCAT(authors.name, authors.surname SEPARATOR ', ') AS name"))->leftjoin('categories','categories.id','=','books.category_id')->leftjoin('publishings','publishings.id','=','books.publishing_id')->leftjoin('authors_books','authors_books.book_id','=','books.id')->leftjoin('authors','authors_books.author_id','=','authors.id')->orderBy('title','asc')->groupBy('title','isbn','books.id','description','category','quantity','publishing')->get();
 
         return view('author',compact('book'));
     }

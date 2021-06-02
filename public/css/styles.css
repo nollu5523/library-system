@@ -300,6 +300,10 @@ label a{
     height: 100%;
 }
 
+.position-cc{
+    margin-top: 30px;
+    margin-left: 200px;
+}
 button {
   border-radius: 0;
 }
@@ -3160,7 +3164,7 @@ fieldset:disabled a.btn {
 }
 
 .wraper-edit{
-    width: 70%;
+    width: 80%;
     margin-left: 36%;
     margin-top: -30%;
 }

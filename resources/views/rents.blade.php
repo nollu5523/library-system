@@ -43,7 +43,7 @@
                         </div>
                         @endif
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3" href="{{ url('/') }}">Strona główna</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Kategorie</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#register">Wypożyczenia</a></li>
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
@@ -87,37 +87,41 @@
                 <div class="ml-12">
                      <div class="wrapper">
                         <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                            <form method='post' action="">
-                                {{ csrf_field() }}
-                                <label class="posesTag"> Nazwa:    </label> <input type="text" name="category" class="form-control devolt"/>  <br/>
-                                <input type="submit" name="submit" class="btn btn-primary btn-xl-lite right-poster" value="Dodaj"/>
-                                </br>
-                            </form>
-
-                               
+                            <a class="btn btn-primary btn-xl-lite" href="{{ url('/showRents') }}"> Wszystkie </a>
+                               <a class="btn btn-primary btn-xl-lite" href="{{ url('/booked') }}"> Rezerwacje </a>
+                               <a class="btn btn-primary btn-xl-lite" href="{{ url('/rented') }}"> Wypożyczone </a>
+                               <a class="btn btn-primary btn-xl-lite" href="{{ url('/returned') }}"> Zwrócone </a>
+                               <form method="get" action="/find">
+                               <input type="text" name="surname" placeholder="Wyszukaj nazwisko">
+                               <button type="submit" class="btn btn-primary btn-xl-lite">Szukaj</button><br><br><br><br><br>
+                               </form>
                         </div>
-                        <div class="table-responsive wraper-predit">
+                        <div class="table-responsive wraper-predit position-cc ">
                             <table class="table">
                             <thead>
                                 <th>#</th>
                                 <th>Imię i Nazwisko</th>
                                 <th>Tytuł</th>
+                                <th>Zarezerwowano</th>
+                                <th>Do</th>
                                 <th>Wypożyczono</th>
                                 <th>Do</th>
-                                @if(Auth::user()->czy_admin==1)
-                                <th>Zwrot</th>
-                                @endif
+                                <th>Oddano</th>
+                                <th></th>
                             </thead>
-                            <?{{ $i=1 }}>
+                            <?{{ $i=1 }}?>
                             @foreach($rent as $r)
                                 <tr>
                                 <td>{{ $i++ }}</td>
                                 <td>{{ $r->name }} {{ $r->surname }}</td>
                                 <td>{{ $r->title}}</td>
+                                <td>{{ $r->booking}}</td>
+                                <td>{{ $r->bookingEnd}}</td>
                                 <td>{{ $r->rentDate}}</td>
                                 <td>{{ $r->returnDate}}</td>
-                                @if(Auth::user()->czy_admin==1)
-                                <td> <a class="crossapp" href="{{ route('deleteRent',['id' => $r->id , 'book_id' => $r->book_id ]) }}"></a></td>
+                                <td>{{ $r->returned}}</td>
+                                @if(isset(Auth::user()->czy_admin))
+                                <td><a class="crossdel" href="{{ route('return', ['id' => $r->id]) }}">Zwróć</a></td>
                                 @endif
                             </tr>
                             @endforeach

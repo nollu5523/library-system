@@ -21,8 +21,8 @@ class CreateBooksTable extends Migration
             $table->unsignedInteger('quantity')->nullable();
             $table->unsignedInteger('category_id')->nullable();
             $table->unsignedInteger('publishing_id')->nullable();
-            $table->date('updated_at')->nullable();
-            $table->date('created_at')->nullable();
+            $table->datetime('updated_at')->nullable();
+            $table->datetime('created_at')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
             $table->foreign('publishing_id')->references('id')->on('publishings')->onDelete('set null');
         });

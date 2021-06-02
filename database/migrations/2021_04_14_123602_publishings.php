@@ -17,8 +17,8 @@ class Publishings extends Migration
         {
             $table->increments('id');
             $table->string('name');
-            $table->date('updated_at')->nullable();
-            $table->date('created_at')->nullable();
+            $table->datetime('updated_at')->nullable();
+            $table->datetime('created_at')->nullable();
         });
     }
 

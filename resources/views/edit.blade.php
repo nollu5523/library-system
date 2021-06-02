@@ -87,6 +87,7 @@
                                         <label class="posesTag"> isbn:    </label> <input type="text" name="isbn" value="{{ $edit->isbn }}" class="form-control devolt"/>  <br/>
                                         <label class="posesTag"> title:    </label> <input type="text" name="title" value="{{ $edit->title }}" class="form-control devolt"/>  <br/>
                                         <label class="posesTag"> opis:    </label> <input type="text" name="description" value="{{ $edit->description }}" class="form-control devolt"/>  <br/>
+                                        <label class="posesTag"> ilość:    </label> <input type="number" name="quantity" value="{{ $edit->quantity }}" class="form-control devolt"/>  <br/>
                                         <label class="posesTag"> Kategoria: </label>
                                         <select class="form-control devolt cls" name="category" id="category">
                                             @foreach($categoryList as $catList)
@@ -108,7 +109,7 @@
                                             @endforeach
                                             </select><br>
                                             <label class="posesTag"> Autor: </label>
-                                            <select class="form-control devolt" name="author" id="author">
+                                            <select class="form-control devolt" name="author[]" id="author" multiple="multiple">
                                             @foreach($authorsList as $autList)
                                             @if(isset($author->id) && $author->id == $autList->id)
                                             <option value="{{$autList->id}}" selected="">{{$autList->name}} {{$autList->surname}}</option>

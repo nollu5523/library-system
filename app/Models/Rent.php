@@ -11,8 +11,11 @@ class Rent extends Model
 
     protected $fillable = [
     	'id',
+    	'booking',
+    	'booking_end',
     	'rent_date',
     	'return_date',
+        'returned',
     	'book_id',
     	'user_id',
     ];

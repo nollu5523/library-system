@@ -120,6 +120,10 @@ Route::post('/updatePublishing', [
 
 //Rent routes
 Route::get('/rents','App\Http\Controllers\RentController@index');
+Route::get('/booked','App\Http\Controllers\RentController@showBooked');
+Route::get('/rented','App\Http\Controllers\RentController@showRented');
+Route::get('/returned', 'App\Http\Controllers\RentController@showReturned');
+Route::get('/find','App\Http\Controllers\RentController@findPerson');
 Route::get('/rent/{id}',[
 'uses' => 'App\Http\Controllers\RentController@rent',
 'as' => 'rent'
@@ -129,10 +133,9 @@ Route::get('/showRent/{id}',[
 'uses' => 'App\Http\Controllers\RentController@showRent',
 'as' => 'showRent'
 ]);
-
-Route::get('/deleteRent/{id}/{book_id}', [
-'uses' => 'App\Http\Controllers\RentController@deleteRent',
-'as' => 'deleteRent'
+Route::get('/return/{id}',[
+'uses' => 'App\Http\Controllers\RentController@return',
+'as' => 'return',
 ]);
 
 
