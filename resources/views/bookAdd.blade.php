@@ -101,11 +101,13 @@
                                             @endforeach
                                             </select><br>
                                             <label class="posesTag"> Autor: </label>
-                                            <select class="form-control devolt" name="author[]" id="author" multiple="multiple">
-                                            @foreach($authorsList as $autList)
-                                            <option value="{{$autList->id}}">{{$autList->name}} {{$autList->surname}}</option>
-                                            @endforeach
-                                            </select>  <br/>
+                                            <div class="plusAut">
+                                                    <select class="form-control devolt" name="author[]" id="author" multiple="multiple">
+                                                    @foreach($authorsList as $autList)
+                                                    <option value="{{$autList->id}}">{{$autList->name}} {{$autList->surname}}</option>
+                                                    @endforeach
+                                                    </select>  <br/>
+                                            </div>
                                             <label class="posesTag"> Ilość:    </label> <input type="number" name="quantity" class="form-control devolt"/>  <br/>
                                             <label class="posesTag"> Opis:    </label> <input type="text" name="description" class="form-control devolt"/>  <br/>
                                             <input type="submit" name="submit" class="btn btn-primary btn-xl-lite right-poster" value="Dodaj"/>

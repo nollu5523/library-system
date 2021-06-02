@@ -129,28 +129,28 @@
                             <div class="control-group">
                                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                     <label>Imię: </label>
-                                    <input class="form-control" id="name" type="text" placeholder="Imie" required="required" data-validation-required-message="Please enter your name." />
+                                    <input class="form-control" id="name" type="text" placeholder="Imie" required="required" data-validation-required-message="Prosze podać imię." />
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                     <label>Adres email: </label>
-                                    <input class="form-control" id="email" type="email" placeholder="Adres email" required="required" data-validation-required-message="Please enter your email address." />
+                                    <input class="form-control" id="email" type="email" placeholder="Adres email" required="required" data-validation-required-message="Prosze podać adres email." />
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                     <label>Numer telefonu:</label>
-                                    <input class="form-control" id="phone" type="tel" placeholder="Numer telefonu" required="required" data-validation-required-message="Please enter your phone number." />
+                                    <input class="form-control" id="phone" type="tel" placeholder="Numer telefonu" required="required" data-validation-required-message="Prosze podać numer telefonu." />
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                     <label>Wiadomość</label>
-                                    <textarea class="form-control" id="message" rows="5" placeholder="Wiadomość" required="required" data-validation-required-message="Please enter a message."></textarea>
+                                    <textarea class="form-control maxsize" id="message" rows="2" placeholder="Wiadomość" required="required" data-validation-required-message="Prosze podać wiadomość."></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>

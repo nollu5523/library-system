@@ -83,19 +83,23 @@
             <div class="container">
                 <!-- News Section Heading-->
                 <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Wypożyczenia</h2>
+                <br><br><br><br>
                 <!-- Icon Divider-->
                 <div class="ml-12">
                      <div class="wrapper">
-                        <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                            <a class="btn btn-primary btn-xl-lite" href="{{ url('/showRents') }}"> Wszystkie </a>
-                               <a class="btn btn-primary btn-xl-lite" href="{{ url('/booked') }}"> Rezerwacje </a>
-                               <a class="btn btn-primary btn-xl-lite" href="{{ url('/rented') }}"> Wypożyczone </a>
-                               <a class="btn btn-primary btn-xl-lite" href="{{ url('/returned') }}"> Zwrócone </a>
-                               <form method="get" action="/find">
-                               <input type="text" name="surname" placeholder="Wyszukaj nazwisko">
-                               <button type="submit" class="btn btn-primary btn-xl-lite">Szukaj</button><br><br><br><br><br>
-                               </form>
+                            <div class="mag2">
+                                    <form method="get" action="/find">
+                                <input type="text" name="surname" class="form-control  size2" placeholder="Wyszukaj nazwisko">
+                                <button type="submit" class="btn btn-primary btn-xl-lite">Szukaj</button>
+                                </form>
+                            </div>
+                        <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm act1">
+                            <a class="btn btn-primary btn-l-lite r23" href="{{ url('/showRents') }}"> Wszystkie </a>
+                               <a class="btn btn-primary btn-l-lite r23 " href="{{ url('/booked') }}"> Rezerwacje </a>
+                               <a class="btn btn-primary btn-l-lite r23" href="{{ url('/rented') }}"> Wypożyczone </a>
+                               <a class="btn btn-primary btn-l-lite r23" href="{{ url('/returned') }}"> Zwrócone </a>
                         </div>
+                        </br></br></br></br>
                         <div class="table-responsive wraper-predit position-cc ">
                             <table class="table">
                             <thead>

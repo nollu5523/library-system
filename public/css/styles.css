@@ -2174,6 +2174,10 @@ select.form-control:focus::-ms-value {
   width: 100%;
 }
 
+.maxsize{
+    width: 720px;
+}
+
 .col-form-label {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -3031,6 +3035,25 @@ fieldset:disabled a.btn {
   background-color: #343a40;
   border-color: #343a40;
 }
+
+.act1{
+    margin-left: 550px;
+}
+
+.mag2{
+    position:absolute;
+    margin-top: -70px;
+}
+
+.size2{
+    width: 250px;
+    margin-right: 8px;
+}
+
+.r23{
+    margin-right: 10px;
+}
+
 .btn-outline-dark:focus, .btn-outline-dark.focus {
   box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
 }
@@ -3164,9 +3187,24 @@ fieldset:disabled a.btn {
 }
 
 .wraper-edit{
-    width: 80%;
+    width: 85%;
     margin-left: 36%;
     margin-top: -30%;
+}
+
+plusAfter{
+    margin-left: 0px;
+}
+
+.plusAut{
+    margin-left: 285px;
+    margin-top: -50px;
+}
+
+
+
+.plusAut plusAfter{
+    display: none;
 }
 
 .wraper-predit{
@@ -3337,8 +3375,8 @@ boxall{
     transition-duration: 1s;
 }
 
-.position:hover{height: 400px;}
-.position:focus{height: 400px;}
+.position:hover{height: 450px;}
+.position:focus{height: 450px;}
 .position boxnext{display: none;}
 .position:hover boxprev{display: none;}
 .position:focus boxprev{display: none;}
@@ -3393,14 +3431,19 @@ boxall{
     font-weight: bold;
     color: var(--gray-dark);
     float: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .preauthornext{
+    width: 500px;
     margin-top: -85px;
     margin-left: 150px;
     font-size: large;
     font-weight: bold;
     color: var(--gray-dark);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .preisbnnext{
