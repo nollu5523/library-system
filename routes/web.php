@@ -124,6 +124,10 @@ Route::get('/booked','App\Http\Controllers\RentController@showBooked');
 Route::get('/rented','App\Http\Controllers\RentController@showRented');
 Route::get('/returned', 'App\Http\Controllers\RentController@showReturned');
 Route::get('/find','App\Http\Controllers\RentController@findPerson');
+Route::get('/booking/{id}',[
+'uses' => 'App\Http\Controllers\RentController@booking',
+'as' => 'booking'
+]);
 Route::get('/rent/{id}',[
 'uses' => 'App\Http\Controllers\RentController@rent',
 'as' => 'rent'

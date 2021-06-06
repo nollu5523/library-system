@@ -87,12 +87,14 @@
                 <!-- Icon Divider-->
                 <div class="ml-12">
                      <div class="wrapper">
+                        @if(isset(Auth::user()->czy_admin))
                             <div class="mag2">
                                     <form method="get" action="/find">
                                 <input type="text" name="surname" class="form-control  size2" placeholder="Wyszukaj nazwisko">
                                 <button type="submit" class="btn btn-primary btn-xl-lite">Szukaj</button>
                                 </form>
                             </div>
+                        @endif
                         <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm act1">
                             <a class="btn btn-primary btn-l-lite r23" href="{{ url('/showRents') }}"> Wszystkie </a>
                                <a class="btn btn-primary btn-l-lite r23 " href="{{ url('/booked') }}"> Rezerwacje </a>
@@ -112,6 +114,7 @@
                                 <th>Do</th>
                                 <th>Oddano</th>
                                 <th></th>
+                                <th></th>
                             </thead>
                             <?{{ $i=1 }}?>
                             @foreach($rent as $r)
@@ -125,7 +128,12 @@
                                 <td>{{ $r->returnDate}}</td>
                                 <td>{{ $r->returned}}</td>
                                 @if(isset(Auth::user()->czy_admin))
-                                <td><a class="crossdel" href="{{ route('return', ['id' => $r->id]) }}">Zwróć</a></td>
+                                    @if($r->returned==NULL)
+                                        @if($r->rentDate==NULL)
+                                        <td><a class="crossdel" href="{{ route('rent', ['id' => $r->rent_id]) }}">Wypożycz</a></td>
+                                        @endif
+                                    <td><a class="crossdel" href="{{ route('return', ['id' => $r->rent_id]) }}">Zwróć</a></td>
+                                    @endif
                                 @endif
                             </tr>
                             @endforeach

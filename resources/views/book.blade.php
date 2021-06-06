@@ -128,7 +128,7 @@
                                     <div class="rgth" ><h3>Opis: </h3></div>
                                     <div class="predescriptionnext">{{$b->description}} </div></br>
                                     @if(isset(Auth::user()->email) && !isset(Auth::user()->czy_admin))
-                                    <div class="btnext" ><a href=" {{ route('rent',['id' => $b->bid]) }}" ><button class="btn btn-primary btn-xl-lite reserv">Wypożycz</button></a></div>
+                                    <div class="btnext" ><a href=" {{ route('booking',['id' => $b->bid]) }}" ><button class="btn btn-primary btn-xl-lite reserv">Rezerwacja</button></a></div>
                                     @elseif(isset(Auth::user()->czy_admin))
                                     <div class="btnext" ><a href=" {{ route('showRent',['id' => $b->bid]) }}" ><button class="btn btn-primary btn-xl-lite reserv">Zobacz kto wypożycza</button></a></div>
                                     @endif
