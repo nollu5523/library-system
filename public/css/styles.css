@@ -3189,7 +3189,11 @@ fieldset:disabled a.btn {
     display: grid;
 }
 
-
+.max22{
+    position: relative;
+    margin-left: -10px !important;
+    width: 100% !important;
+}
 
 .wrapper-line {
     display: inline-block;

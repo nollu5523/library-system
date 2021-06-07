@@ -21,7 +21,7 @@
         <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
             <div class="container">
                 <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    
+
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -101,7 +101,7 @@
                                <a class="btn btn-primary btn-l-lite r23" href="{{ url('/returned') }}"> Zwrócone </a>
                         </div>
                         </br></br></br></br>
-                        <div class="table-responsive wraper-predit position-cc ">
+                        <div class="table-responsive wraper-predit position-cc max22">
                             <table class="table">
                             <thead>
                                 <th>#</th>
