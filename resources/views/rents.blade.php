@@ -21,7 +21,7 @@
         <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
             <div class="container">
                 <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
+                    
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -94,7 +94,6 @@
                                 <button type="submit" class="btn btn-primary btn-xl-lite">Szukaj</button>
                                 </form>
                             </div>
-                        @endif
                         <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm act1">
                             <a class="btn btn-primary btn-l-lite r23" href="{{ url('/showRents') }}"> Wszystkie </a>
                                <a class="btn btn-primary btn-l-lite r23 " href="{{ url('/booked') }}"> Rezerwacje </a>
@@ -139,6 +138,54 @@
                             @endforeach
                             </table>
                         </div>
+                        @else
+                        <div class="position-cc2">
+                            <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm act1">
+                                <a class="btn btn-primary btn-l-lite r23" href="{{ url('/showRents') }}"> Wszystkie </a>
+                                <a class="btn btn-primary btn-l-lite r23 " href="{{ url('/booked') }}"> Rezerwacje </a>
+                                <a class="btn btn-primary btn-l-lite r23" href="{{ url('/rented') }}"> Wypożyczone </a>
+                                <a class="btn btn-primary btn-l-lite r23" href="{{ url('/returned') }}"> Zwrócone </a>
+                            </div>
+                            </br></br></br></br></br></br>
+                            <div class="table-responsive wraper-predit  position-cc2">
+                                <table class="table">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Imię i Nazwisko</th>
+                                    <th>Tytuł</th>
+                                    <th>Zarezerwowano</th>
+                                    <th>Do</th>
+                                    <th>Wypożyczono</th>
+                                    <th>Do</th>
+                                    <th>Oddano</th>
+                                    <th></th>
+                                    <th></th>
+                                </thead>
+                                <?{{ $i=1 }}?>
+                                @foreach($rent as $r)
+                                    <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $r->name }} {{ $r->surname }}</td>
+                                    <td>{{ $r->title}}</td>
+                                    <td>{{ $r->booking}}</td>
+                                    <td>{{ $r->bookingEnd}}</td>
+                                    <td>{{ $r->rentDate}}</td>
+                                    <td>{{ $r->returnDate}}</td>
+                                    <td>{{ $r->returned}}</td>
+                                    @if(isset(Auth::user()->czy_admin))
+                                        @if($r->returned==NULL)
+                                            @if($r->rentDate==NULL)
+                                            <td><a class="crossdel" href="{{ route('rent', ['id' => $r->rent_id]) }}">Wypożycz</a></td>
+                                            @endif
+                                        <td><a class="crossdel" href="{{ route('return', ['id' => $r->rent_id]) }}">Zwróć</a></td>
+                                        @endif
+                                    @endif
+                                </tr>
+                                @endforeach
+                                </table>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
         </section>

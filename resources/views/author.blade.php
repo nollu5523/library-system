@@ -21,7 +21,7 @@
         <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
             <div class="container">
                 <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
+                    
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -44,7 +44,7 @@
                     </ul>
                             <div class="ml-12">
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    
+
 
                                     @if($message = Session::get('error'))
                                             <button type ="button" data-dismiss="alert">x</button>
@@ -64,12 +64,12 @@
                                     <strong>Witaj {{Auth::user()->name}} </strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @elseif(!isset(Auth::user()->czy_admin) && isset(Auth::user()->email))
-                                    
+
                                     <strong>Witaj {{Auth::user()->name}}</strong>
                                     <a href="{{ url('/login/logout') }}"> Logout </a>
                                     @endif
                                 </div>
-                    </div> 
+                    </div>
             </div>
         </nav>
         <!-- Masthead-->
@@ -119,7 +119,7 @@
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Lokalizacja</h4>
                         <p class="lead mb-0">
-                        Stefana Banacha 22, 
+                        Stefana Banacha 22,
                             <br />
                             90-238 Łódź
                         </p>
